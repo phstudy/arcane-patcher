@@ -1,0 +1,35 @@
+<!-- SPDX-License-Identifier: GPL-3.0-only WITH AdditionRef-arcane-client-linking (LICENSES/) -->
+<!-- Inserted into the game's AndroidManifest.xml by the patcher: <manifest> before the game's <application>,
+     <application> at the end of the game's <application>. {package}: the installed package name;
+     {game_activity}: the game's launcher activity (its launcher entry moves to the activity below). -->
+<fragment>
+<manifest><uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.any" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
+    </manifest>
+<application><meta-data android:name="arcane.game_activity" android:value="{game_activity}"/>
+        <activity android:name="arcane.multiplayer.SetupActivity" android:exported="true" android:label="@string/app_name"
+            android:theme="@android:style/Theme.Material.NoActionBar" android:configChanges="orientation|screenSize|keyboardHidden"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="arcane" android:host="connect"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="arcane.multiplayer.ScanActivity" android:exported="false"
+            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden"/>
+        <activity android:name="arcane.multiplayer.RestartActivity" android:exported="false" android:process=":arcane_restart"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" android:excludeFromRecents="true"
+            android:noHistory="true"/>
+        <provider android:name="arcane.multiplayer.ProxyProvider" android:authorities="{package}.arcanemultiplayer"
+            android:exported="false" android:initOrder="1000"/>
+    </application>
+</fragment>

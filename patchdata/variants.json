@@ -1,0 +1,33 @@
+{
+ "offline": {
+  "kind": "offline",
+  "package_suffix": ".offline",
+  "label": "Offline",
+  "loopback": "http://127.0.0.1:28080",
+  "lib_sets": [
+   "local_battles",
+   "publisher_services"
+  ],
+  "min_sdk": 24,
+  "raise_min_sdk": true,
+  "manifest": "manifest/offline.xml",
+  "dex_sets": [
+   "analytics_upload"
+  ]
+ },
+ "multi": {
+  "kind": "multiplayer",
+  "package_suffix": ".multiplayer",
+  "label": "Multiplayer",
+  "loopback": "http://127.0.0.1:28180",
+  "lib_sets": [
+   "publisher_services"
+  ],
+  "min_sdk": 24,
+  "raise_min_sdk": true,
+  "manifest": "manifest/multiplayer.xml",
+  "dex_sets": [
+   "analytics_upload"
+  ]
+ }
+}

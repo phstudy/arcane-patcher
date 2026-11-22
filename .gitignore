@@ -1,0 +1,12 @@
+.DS_Store
+__pycache__/
+.venv/
+build/
+dist/
+*.apk
+*.keystore
+*.jks
+*.apkm
+*.xapk
+*.p12
+src/arcane_patcher/kit/

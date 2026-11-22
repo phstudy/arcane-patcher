@@ -1,0 +1,33 @@
+[project]
+name = "arcane-patcher"
+version = "0.3.0"
+description = "Builds offline and multiplayer variants from your own copy of the v29 Android client"
+license = "GPL-3.0-only"
+license-files = ["LICENSE"]
+requires-python = ">=3.12"
+dependencies = [
+    "cryptography>=50.0.2",
+]
+
+[project.scripts]
+arcane-patcher = "arcane_patcher.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.12.13,<0.13.0"]
+build-backend = "uv_build"
+
+[project.urls]
+Source = "https://github.com/phstudy/arcane-patcher"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+    "segno>=1.6.6",
+]
+# the release executables (packaging/arcane-patcher.spec): pinned, so the bundled code and its notices are reproducible
+release = [
+    "pyinstaller==6.22.3",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

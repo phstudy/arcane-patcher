@@ -1,0 +1,14 @@
+Additional permission under GNU GPL version 3 section 7 (arcane-patcher)
+
+If you modify this Program, or any covered work, by linking or combining it with the game client this Program is
+applied to (or a modified version of that client), containing parts covered by the terms of that client's license,
+the licensors of this Program grant you additional permission to convey the resulting work. Corresponding Source for
+a non-source form of such a combination need not include the source code of the game client's parts; it shall
+include the source code of the parts of this Program used, as well as that of the covered work.
+
+This permission covers the code and data of this Program that a build writes into the client: the Android setup
+screens and runtime (src/arcane_patcher/android/), the byte edits and the code that generates them
+(src/arcane_patcher/rulesgen.py, src/arcane_patcher/dexpatch.py, patchdata/rules/), and the manifest and
+configuration edits (src/arcane_patcher/patch.py, patchdata/manifest/).
+
+It grants no rights to the game client itself, which belongs to its owners; this Program does not distribute it.

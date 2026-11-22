@@ -1,0 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only WITH AdditionRef-arcane-client-linking
+# Copyright (C) the arcane-patcher contributors
+# What this module writes into a client build is covered by the additional permission (GPL section 7) in
+# LICENSES/AdditionRef-arcane-client-linking.txt; it grants no rights to the game client itself.

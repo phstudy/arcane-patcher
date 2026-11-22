@@ -1,0 +1,1455 @@
+{
+ "build_id": "7dfd46f8a9cae37af48aebbf281180a7a82a5ecf",
+ "client": "v29.0 build 1587910",
+ "dex": {
+  "analytics_upload": {
+   "files": {
+    "classes5.dex": [
+     {
+      "length": 3,
+      "new": "0e0000",
+      "note": "saveRecord returns at once",
+      "offset": 4712200,
+      "original_sha256": "1b07a46ab3fce0c13b75b990d44c93d5773cfe97699764fb7ee3c32d48365419"
+     },
+     {
+      "length": 1,
+      "new": "00",
+      "note": "saveRecord returns at once",
+      "offset": 4712204,
+      "original_sha256": "3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d"
+     },
+     {
+      "length": 7,
+      "new": "00000000000000",
+      "note": "saveRecord returns at once",
+      "offset": 4712206,
+      "original_sha256": "461cc48d655f483ea8a3ba264c19c0d807387a6169abe3b0a0449a06f0c310f4"
+     },
+     {
+      "length": 1,
+      "new": "00",
+      "note": "saveRecord returns at once",
+      "offset": 4712214,
+      "original_sha256": "ef6cbd2161eaea7943ce8693b9824d23d1793ffb1c0fca05b600d3899b44c977"
+     },
+     {
+      "length": 4,
+      "new": "00000000",
+      "note": "saveRecord returns at once",
+      "offset": 4712216,
+      "original_sha256": "ba899b6cf74deb9c917753eb4f7f17bc9cf2a726919d676722fb1d82dfee3e18"
+     },
+     {
+      "length": 1,
+      "new": "00",
+      "note": "saveRecord returns at once",
+      "offset": 4712222,
+      "original_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+     },
+     {
+      "length": 1,
+      "new": "00",
+      "note": "saveRecord returns at once",
+      "offset": 4712224,
+      "original_sha256": "2c624232cdd221771294dfbb310aca000a0df6ac8b66b696d90ef06fdefb64a3"
+     },
+     {
+      "length": 1,
+      "new": "00",
+      "note": "saveRecord returns at once",
+      "offset": 4712226,
+      "original_sha256": "452ba1ddef80246c48be7690193c76c1d61185906be9401014fe14f1be64b74f"
+     },
+     {
+      "length": 3,
+      "new": "000000",
+      "note": "saveRecord returns at once",
+      "offset": 4712228,
+      "original_sha256": "7ddb282fda7abdb2420908a0140a2a112593c493707f74aa969901e5c3f05828"
+     },
+     {
+      "length": 3,
+      "new": "000000",
+      "note": "saveRecord returns at once",
+      "offset": 4712232,
+      "original_sha256": "752218692112b50c4461fd62b41b7c41772011e2b528f7ea7665470f8a02512d"
+     },
+     {
+      "length": 1,
+      "new": "00",
+      "note": "saveRecord returns at once",
+      "offset": 4712236,
+      "original_sha256": "e7cf46a078fed4fafd0b5e3aff144802b853f8ae459a4f0c14add3314b7cc3a6"
+     },
+     {
+      "length": 5,
+      "new": "0000000000",
+      "note": "saveRecord returns at once",
+      "offset": 4712238,
+      "original_sha256": "bbf91282b2c90d8067d00859a3835f728c93c46b062163f5031d3c9c38e38631"
+     },
+     {
+      "length": 3,
+      "new": "000000",
+      "note": "saveRecord returns at once",
+      "offset": 4712244,
+      "original_sha256": "c08b99718c9964f429c5409c85f7e033500da91ac01a6ff572d720fec4d97d98"
+     },
+     {
+      "length": 7,
+      "new": "00000000000000",
+      "note": "saveRecord returns at once",
+      "offset": 4712248,
+      "original_sha256": "aeecb063ef25e72268d76a0857a1c5b644484477b2fa6bb641532999d04245a1"
+     },
+     {
+      "length": 13,
+      "new": "00000000000000000000000000",
+      "note": "saveRecord returns at once",
+      "offset": 4712256,
+      "original_sha256": "68c7800c82a4cba70e00e974fc7b0e559d159fc256aa640dc259d464146201cf"
+     },
+     {
+      "length": 7,
+      "new": "00000000000000",
+      "note": "saveRecord returns at once",
+      "offset": 4712270,
+      "original_sha256": "ec0d4c45470484ec7a89eaac870416fe525d80dd891a746c42b851695b171ae8"
+     },
+     {
+      "length": 6,
+      "new": "000000000000",
+      "note": "saveRecord returns at once",
+      "offset": 4712278,
+      "original_sha256": "e89a0d3695eb97b3bb9e676b750290b60854df86af4f999526919057bbf5c9a4"
+     },
+     {
+      "length": 9,
+      "new": "000000000000000000",
+      "note": "saveRecord returns at once",
+      "offset": 4712286,
+      "original_sha256": "9e3e0cf0b4587a2f6ba3194f630046ca0cf88e63262b802a05d84ac4da915eae"
+     },
+     {
+      "length": 5,
+      "new": "0000000000",
+      "note": "saveRecord returns at once",
+      "offset": 4712296,
+      "original_sha256": "5449caaae798076c118b55d6ead09d1a48913d9184a7fc41ee5b34762b543a0d"
+     },
+     {
+      "length": 4,
+      "new": "00000000",
+      "note": "saveRecord returns at once",
+      "offset": 4712302,
+      "original_sha256": "fba3af46a054b4a3872241b002418522bf918f19189fdd4c5a90f446078dd49d"
+     },
+     {
+      "length": 7,
+      "new": "00000000000000",
+      "note": "saveRecord returns at once",
+      "offset": 4712308,
+      "original_sha256": "eb5e3f29c3a7473f42fb152f3bb5b822ee6528142d62dab403b07177345efc74"
+     },
+     {
+      "length": 2,
+      "new": "0000",
+      "note": "saveRecord returns at once",
+      "offset": 4712316,
+      "original_sha256": "002e94b4eb48b47ee93a4232189f248718777687c15ab065fe939a67d7764b0b"
+     }
+    ],
+    "classes6.dex": [
+     {
+      "length": 3,
+      "new": "0e0000",
+      "note": "saveRecord returns at once",
+      "offset": 4680856,
+      "original_sha256": "16f52b7fc249f97831160c632c74b17c1208a257bd093cdb6ed7f22f3f363f1f"
+     },
+     {
+      "length": 1,
+      "new": "00",
+      "note": "saveRecord returns at once",
+      "offset": 4680860,
+      "original_sha256": "3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d"
+     },
+     {
+      "length": 7,
+      "new": "00000000000000",
+      "note": "saveRecord returns at once",
+      "offset": 4680862,
+      "original_sha256": "125b9bbc92b40a1f55298da737634905f638a78cdf89e5935f01a8df3979c040"
+     },
+     {
+      "length": 1,
+      "new": "00",
+      "note": "saveRecord returns at once",
+      "offset": 4680870,
+      "original_sha256": "ef6cbd2161eaea7943ce8693b9824d23d1793ffb1c0fca05b600d3899b44c977"
+     },
+     {
+      "length": 4,
+      "new": "00000000",
+      "note": "saveRecord returns at once",
+      "offset": 4680872,
+      "original_sha256": "7622529001a57ed69edb7ee03b28e8cb3f044c8a82d3bf19eb7e0fc409cba717"
+     },
+     {
+      "length": 1,
+      "new": "00",
+      "note": "saveRecord returns at once",
+      "offset": 4680878,
+      "original_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+     },
+     {
+      "length": 1,
+      "new": "00",
+      "note": "saveRecord returns at once",
+      "offset": 4680880,
+      "original_sha256": "2c624232cdd221771294dfbb310aca000a0df6ac8b66b696d90ef06fdefb64a3"
+     },
+     {
+      "length": 1,
+      "new": "00",
+      "note": "saveRecord returns at once",
+      "offset": 4680882,
+      "original_sha256": "68aa2e2ee5dff96e3355e6c7ee373e3d6a4e17f75f9518d843709c0c9bc3e3d4"
+     },
+     {
+      "length": 3,
+      "new": "000000",
+      "note": "saveRecord returns at once",
+      "offset": 4680884,
+      "original_sha256": "47826d902445c7cdde48b750ea03ebc64dfab474ce3db453fb02a3673e8002ea"
+     },
+     {
+      "length": 3,
+      "new": "000000",
+      "note": "saveRecord returns at once",
+      "offset": 4680888,
+      "original_sha256": "752218692112b50c4461fd62b41b7c41772011e2b528f7ea7665470f8a02512d"
+     },
+     {
+      "length": 1,
+      "new": "00",
+      "note": "saveRecord returns at once",
+      "offset": 4680892,
+      "original_sha256": "ef6cbd2161eaea7943ce8693b9824d23d1793ffb1c0fca05b600d3899b44c977"
+     },
+     {
+      "length": 4,
+      "new": "00000000",
+      "note": "saveRecord returns at once",
+      "offset": 4680894,
+      "original_sha256": "ccbd2416f02cf776780cefa93e5ee93296381818ddd1cfd2f08672465831f4fd"
+     },
+     {
+      "length": 2,
+      "new": "0000",
+      "note": "saveRecord returns at once",
+      "offset": 4680899,
+      "original_sha256": "701fb31a5a40ae9fee934e57000902095285c1d2ce4e4547c90def7bae1aeafe"
+     },
+     {
+      "length": 3,
+      "new": "000000",
+      "note": "saveRecord returns at once",
+      "offset": 4680902,
+      "original_sha256": "c08b99718c9964f429c5409c85f7e033500da91ac01a6ff572d720fec4d97d98"
+     },
+     {
+      "length": 7,
+      "new": "00000000000000",
+      "note": "saveRecord returns at once",
+      "offset": 4680906,
+      "original_sha256": "e049215b3082afaaf38cd9011c613a61715bcb6b55e4ddd9c17d1327739c8f67"
+     },
+     {
+      "length": 13,
+      "new": "00000000000000000000000000",
+      "note": "saveRecord returns at once",
+      "offset": 4680914,
+      "original_sha256": "c9b9fef7ef017f5f9cb080c65aa7b9549d195a282625d7079078e079c12d5b11"
+     },
+     {
+      "length": 7,
+      "new": "00000000000000",
+      "note": "saveRecord returns at once",
+      "offset": 4680928,
+      "original_sha256": "72dcd0a2dfed851e78321436ee985d978e66d47d0477a21e05e1a7f8cd3fb864"
+     },
+     {
+      "length": 6,
+      "new": "000000000000",
+      "note": "saveRecord returns at once",
+      "offset": 4680936,
+      "original_sha256": "7d3a8081a430ca97fb219fc8f898f1d7a9b20250b39a2910a2f08954109d0d37"
+     },
+     {
+      "length": 9,
+      "new": "000000000000000000",
+      "note": "saveRecord returns at once",
+      "offset": 4680944,
+      "original_sha256": "f3db95a225853a107f5d03a87f3b5e6d0e6808492fe8f3a300165418e4fcabda"
+     },
+     {
+      "length": 5,
+      "new": "0000000000",
+      "note": "saveRecord returns at once",
+      "offset": 4680954,
+      "original_sha256": "0d058a35851685e84fa1c068881a72ba632858799d25a1e78d5160e67a1fc7f9"
+     },
+     {
+      "length": 4,
+      "new": "00000000",
+      "note": "saveRecord returns at once",
+      "offset": 4680960,
+      "original_sha256": "e678021983de6e534e356765caca78a1179b111908502243212cb71a998150d3"
+     },
+     {
+      "length": 7,
+      "new": "00000000000000",
+      "note": "saveRecord returns at once",
+      "offset": 4680966,
+      "original_sha256": "323ddccc2a6f2267b33547de0fee66cd9a344e8087fc295a12ae4edbdbb59901"
+     },
+     {
+      "length": 2,
+      "new": "0000",
+      "note": "saveRecord returns at once",
+      "offset": 4680974,
+      "original_sha256": "002e94b4eb48b47ee93a4232189f248718777687c15ab065fe939a67d7764b0b"
+     }
+    ],
+    "classes7.dex": [
+     {
+      "length": 7,
+      "new": "0e000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309172,
+      "original_sha256": "63ea894129e5a965019563940782f2e1fbf1d8bc521354cedc0423c977ca0c31"
+     },
+     {
+      "length": 1,
+      "new": "00",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309180,
+      "original_sha256": "ef6cbd2161eaea7943ce8693b9824d23d1793ffb1c0fca05b600d3899b44c977"
+     },
+     {
+      "length": 9,
+      "new": "000000000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309182,
+      "original_sha256": "2d25d35dbc24cacbf64fc586ad3df1c595681e4bb8ab1c4ff3c3f5025060d5e5"
+     },
+     {
+      "length": 9,
+      "new": "000000000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309192,
+      "original_sha256": "04574f15e46d14df9918ef0198a0ff5dd8ae5ac1112f48b1ad405028a42143f0"
+     },
+     {
+      "length": 5,
+      "new": "0000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309202,
+      "original_sha256": "688eb099cd9ef5da0d9a635d52b3d5f84639a917f950a4dfb64d93b54a1cdb8e"
+     },
+     {
+      "length": 15,
+      "new": "000000000000000000000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309208,
+      "original_sha256": "a4c5bb9f7ae2dbb815e77ec08e1a0c5ca31796e9905eb1c1dda7c7c08dfc02d7"
+     },
+     {
+      "length": 5,
+      "new": "0000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309224,
+      "original_sha256": "15f3d2dfffd67a88cc2ea82a4a8200921e533fdfb9ee9bebd32bb918b930fc04"
+     },
+     {
+      "length": 5,
+      "new": "0000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309230,
+      "original_sha256": "52ed5abc7891cc9713222e0671a7c634a65ae51dd668f51b7bb03c653bf3d493"
+     },
+     {
+      "length": 3,
+      "new": "000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309236,
+      "original_sha256": "995c2cf493264b855d2b591cd02861e56c132494e670340179033a42642c3544"
+     },
+     {
+      "length": 11,
+      "new": "0000000000000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309240,
+      "original_sha256": "23eac127695c001e0f10d69a1475a5ef1defc3f7569ca7a8d87121fbb4b13eee"
+     },
+     {
+      "length": 5,
+      "new": "0000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309252,
+      "original_sha256": "285cb6c8de02fe3a3eda66e89fceb90a6d18215e6fc9e8895541f9ad322309d5"
+     },
+     {
+      "length": 5,
+      "new": "0000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309258,
+      "original_sha256": "da3a7cbeb0307dd297b2c5a8f5c69f1855c5d599864ff66fe091e8666f2ffd9f"
+     },
+     {
+      "length": 1,
+      "new": "00",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309264,
+      "original_sha256": "ba5ec51d07a4ac0e951608704431d59a02b21a4e951acc10505a8dc407c501ee"
+     },
+     {
+      "length": 1,
+      "new": "00",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309266,
+      "original_sha256": "e9b0c031f0493d3fd6b0b668260c79e7efe734bfd4b4115f9d82bc3be609c294"
+     },
+     {
+      "length": 11,
+      "new": "0000000000000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309268,
+      "original_sha256": "dbdeb8bdb297c59dc4bcdb1bc993fe137de047462438944913b4b638390f4e9a"
+     },
+     {
+      "length": 7,
+      "new": "00000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309280,
+      "original_sha256": "bae48ffb8f0996224fd29ea7e16185032d19d8d05d79bc1c53d66fff9f166499"
+     },
+     {
+      "length": 5,
+      "new": "0000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309288,
+      "original_sha256": "358fdc40bed877514c425c3ffaa31e663b03f4ffebea115ecf264ab3d1283cdc"
+     },
+     {
+      "length": 5,
+      "new": "0000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309294,
+      "original_sha256": "d39ed7380d9c7808b4bfe46fdf6f687d09223466b573c3c36affe63843a9558b"
+     },
+     {
+      "length": 5,
+      "new": "0000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309300,
+      "original_sha256": "358fdc40bed877514c425c3ffaa31e663b03f4ffebea115ecf264ab3d1283cdc"
+     },
+     {
+      "length": 11,
+      "new": "0000000000000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309306,
+      "original_sha256": "50f267b7131e9eaa169493f6d7845844e4e16bc558f60bb62efc7cd5a5fbc12f"
+     },
+     {
+      "length": 5,
+      "new": "0000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309318,
+      "original_sha256": "03f648735a320eb24941fe7dff8b3a6ba29f8799fd40b3e59a675671e35878f4"
+     },
+     {
+      "length": 9,
+      "new": "000000000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309324,
+      "original_sha256": "7e85a5fc21d04b149ad6bb65265d0ddd2d234f966afa87031bca80b1df05513a"
+     },
+     {
+      "length": 7,
+      "new": "00000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309334,
+      "original_sha256": "13539a61d14724b759c10459437b4907dd544c6b2dc773ce28055f66ec8bbedc"
+     },
+     {
+      "length": 11,
+      "new": "0000000000000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309342,
+      "original_sha256": "ea4f2e80ce59a51839e6634dc4617016ac231ae81b285a54149f2fb3cecb70f2"
+     },
+     {
+      "length": 3,
+      "new": "000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309354,
+      "original_sha256": "ac2f4e279c628ab34dcd9d63f192d6313c9bae7e02496e6ec787bec0a0cccac5"
+     },
+     {
+      "length": 9,
+      "new": "000000000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309358,
+      "original_sha256": "3907dab60966c924b8b47faa99ab50b3068787bfb6e28fd199a038b2b04dee5f"
+     },
+     {
+      "length": 11,
+      "new": "0000000000000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309368,
+      "original_sha256": "dd31be62b4c2919a4f63a1b1edde0ac61f577bab7fc6903d67a71756370e707c"
+     },
+     {
+      "length": 7,
+      "new": "00000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309380,
+      "original_sha256": "4f58129351351be8f8249fd42fc597d8e011a9466f33f506c4ea093484453409"
+     },
+     {
+      "length": 11,
+      "new": "0000000000000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309388,
+      "original_sha256": "8fabdaddc1d28ef24182322d67109071987f7be1b07e84abc1687788e2bbb7ff"
+     },
+     {
+      "length": 29,
+      "new": "0000000000000000000000000000000000000000000000000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309400,
+      "original_sha256": "acc641b8916f2c24ea0dcd9e4f16ef0bb15a4dbc0b400e86e55bc87cb2a08f52"
+     },
+     {
+      "length": 9,
+      "new": "000000000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309430,
+      "original_sha256": "bdce396f4f0925242ac84e1d246861c868f5651f25ef0da37107e7a3a02c2b07"
+     },
+     {
+      "length": 1,
+      "new": "00",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309440,
+      "original_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+     },
+     {
+      "length": 1,
+      "new": "00",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309442,
+      "original_sha256": "2c624232cdd221771294dfbb310aca000a0df6ac8b66b696d90ef06fdefb64a3"
+     },
+     {
+      "length": 1,
+      "new": "00",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309444,
+      "original_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+     },
+     {
+      "length": 1,
+      "new": "00",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309446,
+      "original_sha256": "3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d"
+     },
+     {
+      "length": 22,
+      "new": "00000000000000000000000000000000000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309448,
+      "original_sha256": "f97f685d84abea4ac043c24d2cfe9c2539fd5b7b90038d7eec21e33a06049ba4"
+     },
+     {
+      "length": 1,
+      "new": "00",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309472,
+      "original_sha256": "ef6cbd2161eaea7943ce8693b9824d23d1793ffb1c0fca05b600d3899b44c977"
+     },
+     {
+      "length": 9,
+      "new": "000000000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309474,
+      "original_sha256": "3182ab1c93e0676376d4f2e384bb92448945c8c23a0caa40c3d3a10d40a55c65"
+     },
+     {
+      "length": 13,
+      "new": "00000000000000000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309484,
+      "original_sha256": "a8c1fdf8acbc788f356ce99482562ade8fc4683c5259fbcb565438560d05976c"
+     },
+     {
+      "length": 5,
+      "new": "0000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309498,
+      "original_sha256": "563452574b997720b28c52b270898ff124b3494010b2cd2d1cf1e9345ef095a4"
+     },
+     {
+      "length": 1,
+      "new": "00",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309504,
+      "original_sha256": "3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d"
+     },
+     {
+      "length": 15,
+      "new": "000000000000000000000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309506,
+      "original_sha256": "7dc17c00771ddaaa6822d6021a15ad7ab02ae6327a1ea8caf7447b895df699d9"
+     },
+     {
+      "length": 13,
+      "new": "00000000000000000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309522,
+      "original_sha256": "9e706b4a82ed3b5fa5fd51681e38423c0c510c4da9e0d7345cc64727212dc884"
+     },
+     {
+      "length": 3,
+      "new": "000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309536,
+      "original_sha256": "e7289c6ff9d889ed8ad08342ea5f845185539bda05900c05e9b3cae5a5535fca"
+     },
+     {
+      "length": 15,
+      "new": "000000000000000000000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309540,
+      "original_sha256": "bcdb5282bc086ad5376392aea65e1c1d24526768d084c45f50613f46fc6d300f"
+     },
+     {
+      "length": 11,
+      "new": "0000000000000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309556,
+      "original_sha256": "371fceecd24d439fb5a007a1156bda7cfa4d0d55e689c54f06c761bd4db55ada"
+     },
+     {
+      "length": 7,
+      "new": "00000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309568,
+      "original_sha256": "586f4ad22133eb1924f95c9637e59af2085c61c2c4ca9a3a877e9f2a813b965d"
+     },
+     {
+      "length": 5,
+      "new": "0000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309576,
+      "original_sha256": "057d0e5ee11bcc93caebe40acfd7a681a92d59b453c6996bda434d44641abf8e"
+     },
+     {
+      "length": 3,
+      "new": "000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309582,
+      "original_sha256": "f73d53ae09147f34195c080e1ecf38221b1841d71af5e0f539455db53a30104e"
+     },
+     {
+      "length": 1,
+      "new": "00",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309586,
+      "original_sha256": "9d1e0e2d9459d06523ad13e28a4093c2316baafe7aec5b25f30eba2e113599c4"
+     },
+     {
+      "length": 13,
+      "new": "00000000000000000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309588,
+      "original_sha256": "a0b9d174882c4a319ffe9c08258fb5f32ecaa7dc5dbc8504a7d327463eb29e3f"
+     },
+     {
+      "length": 3,
+      "new": "000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309602,
+      "original_sha256": "83045fb8f6303abad43db95246eccf5364cc8c536bbe70289ff72b29ca8c42f6"
+     },
+     {
+      "length": 17,
+      "new": "0000000000000000000000000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309606,
+      "original_sha256": "8679385187ea78d35544a31235307af9ac255300d2861abe8821ff007032aa5e"
+     },
+     {
+      "length": 11,
+      "new": "0000000000000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309624,
+      "original_sha256": "6cfc7b3b35575dbc6408415cd437ac69e53a1ae240d94711087ec6e26ccaaac6"
+     },
+     {
+      "length": 7,
+      "new": "00000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309636,
+      "original_sha256": "51aca8ec66f1e3fc9c411a15b13b1d35b0156b8147473c2c926397c507d0eb4e"
+     },
+     {
+      "length": 5,
+      "new": "0000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309644,
+      "original_sha256": "057d0e5ee11bcc93caebe40acfd7a681a92d59b453c6996bda434d44641abf8e"
+     },
+     {
+      "length": 1,
+      "new": "00",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309650,
+      "original_sha256": "265fda17a34611b1533d8a281ff680dc5791b0ce0a11c25b35e11c8e75685509"
+     },
+     {
+      "length": 1,
+      "new": "00",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309652,
+      "original_sha256": "9d1e0e2d9459d06523ad13e28a4093c2316baafe7aec5b25f30eba2e113599c4"
+     },
+     {
+      "length": 13,
+      "new": "00000000000000000000000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309654,
+      "original_sha256": "a0b9d174882c4a319ffe9c08258fb5f32ecaa7dc5dbc8504a7d327463eb29e3f"
+     },
+     {
+      "length": 3,
+      "new": "000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309668,
+      "original_sha256": "83045fb8f6303abad43db95246eccf5364cc8c536bbe70289ff72b29ca8c42f6"
+     },
+     {
+      "length": 3,
+      "new": "000000",
+      "note": "submitAllRecords returns at once",
+      "offset": 1309672,
+      "original_sha256": "f92915fecdd96d0d865d3fd5be97603d7c9e44d31f693b5c89994ef4d9fdb85d"
+     },
+     {
+      "length": 1,
+      "new": "0e",
+      "note": "saveRecord returns at once",
+      "offset": 1309064,
+      "original_sha256": "3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d"
+     },
+     {
+      "length": 7,
+      "new": "00000000000000",
+      "note": "saveRecord returns at once",
+      "offset": 1309066,
+      "original_sha256": "2337df988732d1f7c73e8593584456ecc1e79d60f19247a33e023d07265962b8"
+     },
+     {
+      "length": 9,
+      "new": "000000000000000000",
+      "note": "saveRecord returns at once",
+      "offset": 1309074,
+      "original_sha256": "db932b96f5abf92bbe8414eca5531758467955ec595fd4b6432bc9ce36da17bc"
+     },
+     {
+      "length": 9,
+      "new": "0e0000000000000000",
+      "note": "saveRecord returns at once",
+      "offset": 1309100,
+      "original_sha256": "1446b19822f0d557c1b65733fe147359fd2e130e131c9efece6fee7050229272"
+     },
+     {
+      "length": 7,
+      "new": "00000000000000",
+      "note": "saveRecord returns at once",
+      "offset": 1309110,
+      "original_sha256": "39e86e3c787590face284f607fe52777dd075b4c00470b79a97d2c014ce15eaf"
+     },
+     {
+      "length": 1,
+      "new": "00",
+      "note": "saveRecord returns at once",
+      "offset": 1309118,
+      "original_sha256": "4d7b3ef7300acf70c892d8327db8272f54434adbc61a4e130a563cb59a0d0f47"
+     },
+     {
+      "length": 7,
+      "new": "00000000000000",
+      "note": "saveRecord returns at once",
+      "offset": 1309120,
+      "original_sha256": "16191bcb0ee2ceaaf7e518dd439b2e3b700a5d7adfbebc2f82967b989c7d3b45"
+     },
+     {
+      "length": 10,
+      "new": "00000000000000000000",
+      "note": "saveRecord returns at once",
+      "offset": 1309128,
+      "original_sha256": "2375b83b27257041cc645f5c3dc2ddcb623b6b44e3a8a73369c2957aca4334d3"
+     }
+    ]
+   },
+   "title": "analytics events neither stored nor uploaded (the Kinesis recorder returns at once)"
+  },
+  "consent": {
+   "files": {
+    "classes5.dex": [
+     {
+      "length": 18,
+      "new": "207b22616473223a226e6f6e5f706572736f",
+      "note": "consent dialog: showConsent reports at once",
+      "offset": 1664585,
+      "original_sha256": "ff195264374a8dbeba1ef2b811dc29d9cbd0abe0a27b75f01306d23f35ff35cc"
+     },
+     {
+      "length": 4,
+      "new": "616c697a",
+      "note": "consent dialog: showConsent reports at once",
+      "offset": 1664604,
+      "original_sha256": "e2a2fe56c6a22b5efa6ced39767fc8b430c129550d16a00f45b3665fc03f2f0a"
+     },
+     {
+      "length": 3,
+      "new": "64227d",
+      "note": "consent dialog: showConsent reports at once",
+      "offset": 1664609,
+      "original_sha256": "0bfc48048637a142687eef621a04a4f4b26f4a6759966ff015960a2a6d350027"
+     },
+     {
+      "length": 2,
+      "new": "2020",
+      "note": "consent dialog: showConsent reports at once",
+      "offset": 1664613,
+      "original_sha256": "fa51fd49abf67705d6a35d18218c115ff5633aec1f9ebfdc9d5d4956416f57f6"
+     },
+     {
+      "length": 10,
+      "new": "20202020202020202020",
+      "note": "consent dialog: showConsent reports at once",
+      "offset": 1664616,
+      "original_sha256": "1d9962251c1bbb196d9d25189f4da9e7cdc94855d8398e518e21855db8ab549f"
+     },
+     {
+      "length": 8,
+      "new": "2020202020202020",
+      "note": "consent dialog: showConsent reports at once",
+      "offset": 1664642,
+      "original_sha256": "a57b08a480b822a0a572b993391c292ede593bf8000b406675b180bbb16260fa"
+     },
+     {
+      "length": 6,
+      "new": "202020202020",
+      "note": "consent dialog: showConsent reports at once",
+      "offset": 1664651,
+      "original_sha256": "dcdd3ff37485459f141167478dc8973e6a825b6a1ff7b96e141497942224bc33"
+     },
+     {
+      "length": 4,
+      "new": "20202020",
+      "note": "consent dialog: showConsent reports at once",
+      "offset": 1664658,
+      "original_sha256": "7edb360f06acaef2cc80dba16cf563f199d347db4443da04da0c8173e3f9e4ed"
+     },
+     {
+      "length": 3,
+      "new": "202020",
+      "note": "consent dialog: showConsent reports at once",
+      "offset": 1664663,
+      "original_sha256": "9150c74c5f92d51a92857f4b9678105ba5a676d308339a353b20bd38cd669ce7"
+     },
+     {
+      "length": 6,
+      "new": "202020202020",
+      "note": "consent dialog: showConsent reports at once",
+      "offset": 1664667,
+      "original_sha256": "3c259ed3deb3e27cb83273ac37621df8abc76d6f73d00d32cfebb2d4da5cc35f"
+     },
+     {
+      "length": 9,
+      "new": "202020202020202020",
+      "note": "consent dialog: showConsent reports at once",
+      "offset": 1664674,
+      "original_sha256": "2104e56ef446302ca000d565b208f9f5b58b8d98585879da089b8940f50e40a0"
+     },
+     {
+      "length": 1,
+      "new": "03",
+      "note": "consent dialog: showConsent reports at once",
+      "offset": 7201208,
+      "original_sha256": "dbc1b4c900ffe48d575b5da5c638040125f65db0fe3e24494b76ea986457d986"
+     },
+     {
+      "length": 5,
+      "new": "1a02b90112",
+      "note": "consent dialog: showConsent reports at once",
+      "offset": 7201240,
+      "original_sha256": "a1b5bd75e19fb6a0298e8313473c769b23f850b8c93258528b3266851282b117"
+     },
+     {
+      "length": 2,
+      "new": "30c5",
+      "note": "consent dialog: showConsent reports at once",
+      "offset": 7201247,
+      "original_sha256": "e96c662ea91ab667af368efb79cd351cfb35a1b2ba5b2a1a38b634072e6ac31e"
+     }
+    ]
+   },
+   "title": "consent dialog not shown (recorded: no personalised ads; no age or terms answered)"
+  }
+ },
+ "format": 2,
+ "game_lib": "lib/arm64-v8a/libil2cpp.so",
+ "lib": {
+  "ad_rewards": {
+   "edits": [
+    {
+     "length": 4,
+     "new": "88420439",
+     "note": "rewarded placements shown",
+     "offset": 18014868,
+     "original_sha256": "8ab9d14914d101d2852a6678757dd01f30557bf1027ef4fa2f892067cc046f6d"
+    },
+    {
+     "length": 4,
+     "new": "1f2003d5",
+     "note": "rewarded placements stay shown",
+     "offset": 18053796,
+     "original_sha256": "ce8b1f63314178e7224bcb9202a32482bc91f2d32afd8160a9b71b77d62eabea"
+    },
+    {
+     "length": 4,
+     "new": "20000014",
+     "note": "reward without a video",
+     "offset": 18023552,
+     "original_sha256": "1182ecd0e7cc40be619a7d2cc7c42c1ec3d7bd3c21fd5eabf93fcb6d3dfdc079"
+    }
+   ],
+   "title": "ad rewards (no rewarded video)"
+  },
+  "guest_login": {
+   "edits": [
+    {
+     "length": 8,
+     "new": "20008052c0035fd6",
+     "note": "guest login",
+     "offset": 21072296,
+     "original_sha256": "8684cf85265d146ed1f289e5d46ccbbcc73e17ac863e8de5c2ca87b91c04664b"
+    }
+   ],
+   "title": "guest login (no sign-in popup)"
+  },
+  "local_battles": {
+   "edits": [
+    {
+     "length": 8,
+     "new": "80330190004840f9",
+     "note": "KOTH battle start",
+     "offset": 22942004,
+     "original_sha256": "d3a96f7b60bb198154504f29b4e02d9f9d6414d1ab08595ed023a3456fc69a2d"
+    },
+    {
+     "length": 4,
+     "new": "89330190",
+     "note": "KOTH battle start",
+     "offset": 22942100,
+     "original_sha256": "bd7bf56e30af7773e8d65779893547ef1f19900a76f7ad35c2ae7a4c0e6cc5cb"
+    },
+    {
+     "length": 4,
+     "new": "294940f9",
+     "note": "KOTH battle start",
+     "offset": 22942120,
+     "original_sha256": "9c9459266c981c543759f472a1dbeb242cbb936e09c29d5e0bd1faa827335c9d"
+    },
+    {
+     "length": 36,
+     "new": "e103132ae2031caa23008052e4031faa1f2003d51f2003d51f2003d5f70300aa16eff697",
+     "note": "KOTH battle start",
+     "offset": 22942136,
+     "original_sha256": "f47a2a696d3df0b034bcd144d0f875e96fc5334b06ea4f0fbe4f680cfe87c1bc"
+    },
+    {
+     "length": 4,
+     "new": "1f2003d5",
+     "note": "KOTH battle start",
+     "offset": 22942496,
+     "original_sha256": "4e96b67604e57d413be30e23f4bf9ab48b418dedae5be828da7c941d8de0f711"
+    },
+    {
+     "length": 8,
+     "new": "003c01d0004840f9",
+     "note": "arena battle start",
+     "offset": 21820088,
+     "original_sha256": "2c4d4060d3ac8bc6db7bd58c6926c7763d9c087bce62ee9915f5105038ae761b"
+    },
+    {
+     "length": 4,
+     "new": "093c01d0",
+     "note": "arena battle start",
+     "offset": 21820184,
+     "original_sha256": "56675f9849221797810cd1265044d44d4aa4e3facf323f98a67d1f4b92e98c05"
+    },
+    {
+     "length": 4,
+     "new": "294940f9",
+     "note": "arena battle start",
+     "offset": 21820204,
+     "original_sha256": "9c9459266c981c543759f472a1dbeb242cbb936e09c29d5e0bd1faa827335c9d"
+    },
+    {
+     "length": 36,
+     "new": "e103132ae2031caa23008052e4031faa1f2003d51f2003d51f2003d5f70300aab536fb97",
+     "note": "arena battle start",
+     "offset": 21820220,
+     "original_sha256": "27bc4977339f36e6ed3bab2513d36571662300b8113534eb121f66e6b0a609ea"
+    },
+    {
+     "length": 4,
+     "new": "1f2003d5",
+     "note": "arena battle start",
+     "offset": 21820580,
+     "original_sha256": "0631aa3e9b422b61431d8374200f0328c93dd0cc6b1ec02bc7a2e9890c74921f"
+    },
+    {
+     "length": 8,
+     "new": "c04201b0004840f9",
+     "note": "friendly battle start",
+     "offset": 20939428,
+     "original_sha256": "0f409e6272b7ba4ff6324f9abfd443849006a455a944283a9875bd181d247a33"
+    },
+    {
+     "length": 4,
+     "new": "c94201b0",
+     "note": "friendly battle start",
+     "offset": 20939536,
+     "original_sha256": "253e0599057f7eb3f565091411c9d2c56a650bff7167df93d179a7e128017d8d"
+    },
+    {
+     "length": 4,
+     "new": "294940f9",
+     "note": "friendly battle start",
+     "offset": 20939556,
+     "original_sha256": "9c9459266c981c543759f472a1dbeb242cbb936e09c29d5e0bd1faa827335c9d"
+    },
+    {
+     "length": 36,
+     "new": "e103132ae2031caa23008052e4031faa1f2003d51f2003d51f2003d5f70300aab792fe97",
+     "note": "friendly battle start",
+     "offset": 20939572,
+     "original_sha256": "de713486bdf3edfce575bb75676c60c7f95f6651f299ad604c73e834e5254d39"
+    },
+    {
+     "length": 4,
+     "new": "1f2003d5",
+     "note": "friendly battle start",
+     "offset": 20939932,
+     "original_sha256": "302b5a279a7b13b219b01fdf829f918d66ddc21b64c2d695206645489a18828c"
+    },
+    {
+     "length": 8,
+     "new": "a02801b0004840f9",
+     "note": "club war battle start",
+     "offset": 24366824,
+     "original_sha256": "dff5e3e0c20b88c42fc95816147ed1a80e241809b7a3cf25b2c2fa280babd2bc"
+    },
+    {
+     "length": 4,
+     "new": "a92801b0",
+     "note": "club war battle start",
+     "offset": 24366920,
+     "original_sha256": "f47a8b4fba18a4b21b4f3c0dd779db429034ced1995476234d740fba02772f3a"
+    },
+    {
+     "length": 4,
+     "new": "294940f9",
+     "note": "club war battle start",
+     "offset": 24366940,
+     "original_sha256": "9c9459266c981c543759f472a1dbeb242cbb936e09c29d5e0bd1faa827335c9d"
+    },
+    {
+     "length": 36,
+     "new": "e103132ae2031caa23008052e4031faa1f2003d51f2003d51f2003d5f70300aaa97ff197",
+     "note": "club war battle start",
+     "offset": 24366956,
+     "original_sha256": "95d104721c3c6642ef7a1d16670fc14458ee00ae25eab11e251db6e92b60c6df"
+    },
+    {
+     "length": 4,
+     "new": "1f2003d5",
+     "note": "club war battle start",
+     "offset": 24367316,
+     "original_sha256": "c93a67d8377919e3b42745ad5c7f3b5bffa5f83a7884785d08ad5331bffa40c2"
+    },
+    {
+     "length": 8,
+     "new": "c0520190004840f9",
+     "note": "limited-time arena battle start",
+     "offset": 18847248,
+     "original_sha256": "be8130ec9f598d91eed694d5cc14276908153f7022544f3ef1991465a81916da"
+    },
+    {
+     "length": 8,
+     "new": "c8520190084940f9",
+     "note": "limited-time arena battle start",
+     "offset": 18847376,
+     "original_sha256": "b210641e70ca9db25efedaf867049687e6fee472e0674a865ffa0f40f0d62bed"
+    },
+    {
+     "length": 36,
+     "new": "e103132ae20317aa23008052e4031faa1f2003d51f2003d51f2003d5f80300aada8d0694",
+     "note": "limited-time arena battle start",
+     "offset": 18847400,
+     "original_sha256": "96873cc08d38506afeac0fe3fb62b6b36b6ac36add5ed0f275c54dd5f7aa9802"
+    },
+    {
+     "length": 4,
+     "new": "1f2003d5",
+     "note": "limited-time arena battle start",
+     "offset": 18847756,
+     "original_sha256": "0aa515081a837da06d3a891baacd932ff7d5cc2eed13455deeff60b1c7560533"
+    },
+    {
+     "length": 8,
+     "new": "00008052c0035fd6",
+     "note": "limited-time arena quit",
+     "offset": 18847040,
+     "original_sha256": "340fb0796c5e04c3ebb714e5f047c9474b16e36d16e0657449801e4e3fb017bc"
+    },
+    {
+     "length": 56,
+     "new": "f80308aa0d000014680a40f9082940f9081d40f989424039011940f949000035012940f9640100141f2003d51f2003d51f2003d51f2003d5",
+     "note": "limited-time arena result",
+     "offset": 16402548,
+     "original_sha256": "6fc39fca91568d2e26c38329236afe248aea5df383ffc3fc463c23c90b4e6ba6"
+    },
+    {
+     "length": 4,
+     "new": "96feff17",
+     "note": "limited-time arena result",
+     "offset": 16404004,
+     "original_sha256": "c27e496885ffbad79d2d47f50d848b600fb6406400844c2221215c19feb490d6"
+    },
+    {
+     "length": 8,
+     "new": "00008052c0035fd6",
+     "note": "KOTH quit",
+     "offset": 22941796,
+     "original_sha256": "340fb0796c5e04c3ebb714e5f047c9474b16e36d16e0657449801e4e3fb017bc"
+    },
+    {
+     "length": 8,
+     "new": "00008052c0035fd6",
+     "note": "arena quit",
+     "offset": 21819880,
+     "original_sha256": "340fb0796c5e04c3ebb714e5f047c9474b16e36d16e0657449801e4e3fb017bc"
+    },
+    {
+     "length": 8,
+     "new": "00008052c0035fd6",
+     "note": "friendly battle quit",
+     "offset": 20939232,
+     "original_sha256": "340fb0796c5e04c3ebb714e5f047c9474b16e36d16e0657449801e4e3fb017bc"
+    },
+    {
+     "length": 4,
+     "new": "33000014",
+     "note": "KOTH result",
+     "offset": 22939868,
+     "original_sha256": "0c33f7e17f90f29c01707c1f6a788e7a9f2c2855121d8cdff4c56909573e485f"
+    },
+    {
+     "length": 40,
+     "new": "e90e40f9291940b9aa064139682240f9081540f9012140f93f010a6b80070054012940f93a000014",
+     "note": "KOTH result",
+     "offset": 22939872,
+     "original_sha256": "ceadf7f8d9f47148bfa13f09263c1b0557b496f90d80acfa849303a013f41903"
+    },
+    {
+     "length": 4,
+     "new": "beffff17",
+     "note": "KOTH result",
+     "offset": 22940136,
+     "original_sha256": "32f8265c45acacb381c57db108991e87a9b3f8dfee4dfba496a9a2ec35306a70"
+    },
+    {
+     "length": 4,
+     "new": "36000014",
+     "note": "club war result",
+     "offset": 24363024,
+     "original_sha256": "af235a2e02d3c774790d4161f0428dd0e4d03c86a97a6faee8fc86f9c17fe993"
+    },
+    {
+     "length": 40,
+     "new": "a90e40f9291940b9ca064139682a40f9081540f9012140f93f010a6bc0060054012940f934000014",
+     "note": "club war result",
+     "offset": 24363028,
+     "original_sha256": "6c851a4617560111296454cc24f2518af5d0316f375ed164556eeb7790827a62"
+    },
+    {
+     "length": 4,
+     "new": "c4ffff17",
+     "note": "club war result",
+     "offset": 24363268,
+     "original_sha256": "3292ee0f3c9950ffbed5f3c034d986196d4ea0d5aa133928f693b0e303e42b83"
+    },
+    {
+     "length": 4,
+     "new": "36000014",
+     "note": "arena result",
+     "offset": 21295896,
+     "original_sha256": "a1068dc4c06628e061114c2977d4138844d34338dc7cd42a0e3e9c623aac94ff"
+    },
+    {
+     "length": 4,
+     "new": "4d000014",
+     "note": "arena result",
+     "offset": 21295640,
+     "original_sha256": "17a70719e9f38e873f74a3be0dc2ee2a9447f29f69f2c298a5e3ab5319c3f811"
+    },
+    {
+     "length": 12,
+     "new": "f30300aaf80303aab2ffff17",
+     "note": "arena result",
+     "offset": 21295948,
+     "original_sha256": "97baa37a0997d94e01a23bf167d4df9cbb36838dbbf465ed408d5ccc9732146b"
+    },
+    {
+     "length": 16,
+     "new": "e10318aad80500b5c19a40f92c000014",
+     "note": "arena result",
+     "offset": 21295960,
+     "original_sha256": "3b9baa5dcd9b169e92d71de29e0592d5dbf3dc72e43b228de8c585c088af98ae"
+    },
+    {
+     "length": 28,
+     "new": "682a40f9081540f989624039031940f949000035032940f9b6fd0114",
+     "note": "arena result",
+     "offset": 21295976,
+     "original_sha256": "714bfdd1168ade920cebd763040ad92dd5e02d10f6ab05f439c2a0b429a753df"
+    },
+    {
+     "length": 4,
+     "new": "d2ffff17",
+     "note": "arena result",
+     "offset": 21296144,
+     "original_sha256": "3292ee0f3c9950ffbed5f3c034d986196d4ea0d5aa133928f693b0e303e42b83"
+    },
+    {
+     "length": 4,
+     "new": "4502fe17",
+     "note": "arena result",
+     "offset": 21817940,
+     "original_sha256": "6cddd696e98def4b409ab7e46509bd471847c486186ac0a1545b7a6dab0079c2"
+    },
+    {
+     "length": 28,
+     "new": "682a40f9081540f989624039031940f949000035032940f9c0035fd6",
+     "note": "friendly battle result",
+     "offset": 21296004,
+     "original_sha256": "a3ac4f06620f6a5b5fa9d2d357a33a5ae641218fbdae25b0525ab80db2df8310"
+    },
+    {
+     "length": 4,
+     "new": "b15d0194",
+     "note": "friendly battle result",
+     "offset": 20937920,
+     "original_sha256": "6cddd696e98def4b409ab7e46509bd471847c486186ac0a1545b7a6dab0079c2"
+    },
+    {
+     "length": 96,
+     "new": "f44fbea9fd7b01a9f30300aae04601d0002030912d9ee397e84601d0000546f95d9ee397f40300aae1031faa996d3794680a40f90805413908010052881a00b988008052883a00b9e00313aae10314aafd7b41a9f44fc2a8e2031faac2feff17",
+     "note": "KOTH forfeit",
+     "offset": 22940736,
+     "original_sha256": "a9e22221426828ff3b50820c60d1813640ec391459a090ab116a3db64c72f717"
+    },
+    {
+     "length": 104,
+     "new": "f44fbea9fd7b01a9f30300aa605301f000203091e5e4e997685301f0000546f915e5e997f40300aae1031faa51b43d94680a40f90805413908010052881a00b988008052883a00b9e00313aae10314aafd7b41a9f44fc2a8080040f902d940f908d540f900011fd6",
+     "note": "arena and friendly battle forfeit",
+     "offset": 21295456,
+     "original_sha256": "cbc3da2e5b6394359c2c9f50a3befa7123907410cb49c28d792cea97def58062"
+    },
+    {
+     "length": 96,
+     "new": "f44fbea9fd7b01a9f30300aa003c01d000203091cf2fde97083c01d0000546f9ff2fde97f40300aae1031faa3bff3194680a40f90805413908010052881a00b988008052883a00b9e00313aae10314aafd7b41a9f44fc2a8e2031faa1ffeff17",
+     "note": "club war forfeit",
+     "offset": 24364472,
+     "original_sha256": "d0e98724fa68dd9cb4fc64316ee32aacb8656d495efa75c7f65b08181c37aa02"
+    }
+   ],
+   "title": "local multiplayer battles"
+  },
+  "publisher_services": {
+   "edits": [
+    {
+     "length": 20,
+     "new": "810000b4e00301aae1031faa6ae33f14c0035fd6",
+     "note": "store catalog not requested",
+     "offset": 18004568,
+     "original_sha256": "6b9e85dda79fd6f6aedf131d0ea203ff70cd1aa27f634a25e47307b7e021c8cb"
+    },
+    {
+     "length": 20,
+     "new": "820000b4e00302aae1031faab4e53f14c0035fd6",
+     "note": "store products not queried",
+     "offset": 18002224,
+     "original_sha256": "b1ec0d4963514d66f2717ca8aada434840917342f28d7d9f4fc5b0c7f22c0674"
+    },
+    {
+     "length": 4,
+     "new": "1f2003d5",
+     "note": "account status taken as active",
+     "offset": 20323708,
+     "original_sha256": "c6d00aa7ecbeabef0dff4ad6ddc1dfbb7c97895a5dad495a5ac0572b7cc6f226"
+    }
+   ],
+   "title": "no waiting for the publisher's services (store catalog, account status)"
+  },
+  "rate_prompt": {
+   "edits": [
+    {
+     "length": 8,
+     "new": "00008052c0035fd6",
+     "note": "rate prompt",
+     "offset": 27435476,
+     "original_sha256": "45a7f7a8ac53d55f175cda312759bd5ae5da5ec95aa68ca7eeae5ae5744947b8"
+    }
+   ],
+   "title": "rate-now prompt (never shown)"
+  },
+  "store_timers": {
+   "edits": [
+    {
+     "length": 140,
+     "new": "e00308aaacffff97090680d21c000014e00308aaa8ffff97091a80d218000014e00308aaa4ffff97090780d214000014e00308aaa0ffff97090d80d210000014e00308aa9cffff97091080d20c000014e00308aa98ffff97090880d208000014e00308aa94ffff97091780d204000014e00308aa90ffff97090e80d2800000b4006869f8ddffff171f2003d5",
+     "note": "timed store cards",
+     "offset": 22779468,
+     "original_sha256": "9575a1efef983a67e4e91920c4a89c53d418242dd14a04b38ec367a17f0bc781"
+    },
+    {
+     "length": 4,
+     "new": "ac5c85fe",
+     "note": "timed store cards (tab table)",
+     "offset": 47593892,
+     "original_sha256": "6bf8ea6e69c1b3da06ed99ca4931a450b1bdf856ad41859134e4704db1d15182"
+    },
+    {
+     "length": 4,
+     "new": "cc5c85fe",
+     "note": "timed store cards (tab table)",
+     "offset": 47593896,
+     "original_sha256": "dababb00d150097e08a3285bd62a326818940c1e094ef24c3756a3c7d8e8adcf"
+    },
+    {
+     "length": 4,
+     "new": "fc5c85fe",
+     "note": "timed store cards (tab table)",
+     "offset": 47593900,
+     "original_sha256": "12a898ff49fd97768af8154ac7ab24229eb028262eb66d6a335501f70468c84d"
+    },
+    {
+     "length": 4,
+     "new": "0c5d85fe",
+     "note": "timed store cards (tab table)",
+     "offset": 47593908,
+     "original_sha256": "d0ffb7a1034478ff854e243ef083319c3e077966f464baaa438679a974fc2610"
+    },
+    {
+     "length": 4,
+     "new": "bc5c85fe",
+     "note": "timed store cards (tab table)",
+     "offset": 47593912,
+     "original_sha256": "c2b986ee472c38497bcaff5885ef2eb955126cbffc04e170348fa8cf03c2d2cd"
+    },
+    {
+     "length": 4,
+     "new": "dc5c85fe",
+     "note": "timed store cards (tab table)",
+     "offset": 47593920,
+     "original_sha256": "650cc45c896b3b826051e060a9efd4f0d0a1410ba397549d417b9e65d3894b94"
+    },
+    {
+     "length": 4,
+     "new": "1c5d85fe",
+     "note": "timed store cards (tab table)",
+     "offset": 47593924,
+     "original_sha256": "d2339b9f13e18ba3072e569cf6e1af3078a4665a800e5e64bc5bb983b7fa3e32"
+    },
+    {
+     "length": 4,
+     "new": "ec5c85fe",
+     "note": "timed store cards (tab table)",
+     "offset": 47593932,
+     "original_sha256": "bc1a2433c65e83a47ad8001e1669c12227b02092db75f74e0eecf895953591bb"
+    }
+   ],
+   "title": "store timers (store cards count down)"
+  }
+ },
+ "license": "GPL-3.0-only WITH AdditionRef-arcane-client-linking",
+ "manifest": {
+  "meta_data": {
+   "firebase_analytics_collection_deactivated": "true",
+   "firebase_analytics_collection_enabled": "false",
+   "firebase_crashlytics_collection_enabled": "false",
+   "firebase_inapp_messaging_auto_data_collection_enabled": "false",
+   "firebase_messaging_auto_init_enabled": "false",
+   "firebase_performance_collection_enabled": "false",
+   "google_analytics_adid_collection_enabled": "false",
+   "google_analytics_automatic_screen_reporting_enabled": "false",
+   "google_analytics_default_allow_ad_personalization_signals": "false",
+   "google_analytics_default_allow_ad_storage": "false",
+   "google_analytics_default_allow_ad_user_data": "false",
+   "google_analytics_default_allow_analytics_storage": "false",
+   "google_analytics_ssaid_collection_enabled": "false"
+  },
+  "remove": [
+   "com.google.firebase.messaging.",
+   "com.google.firebase.iid.",
+   "com.google.android.gms.measurement.",
+   "com.google.android.datatransport.",
+   "backend:com.google.android.datatransport.",
+   "com.google.android.c2dm.",
+   "csdk.",
+   "com.google.android.gms.ads.",
+   "com.applovin.",
+   "com.facebook.ads.",
+   "com.ironsource.",
+   "com.vungle.",
+   "com.mbridge.",
+   "com.fyber.",
+   "com.tapjoy.",
+   "com.unity3d.services.",
+   "io.bidmachine.",
+   "com.explorestack.",
+   "com.appboy.",
+   "com.braze.",
+   "com.singular.",
+   "com.amazonaws.mobileconnectors.pinpoint.",
+   "com.google.android.gms.permission.AD_ID",
+   "com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE",
+   "BIND_GET_INSTALL_REFERRER_SERVICE"
+  ],
+  "title": "third-party analytics, crash reporting, push and advertising services removed"
+ }
+}
