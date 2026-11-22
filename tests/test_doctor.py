@@ -136,8 +136,9 @@ def test_window_only_fills_in_command_line_options():
     assert cmd[:len(gui.program())] == gui.program()
     args = cmd[len(gui.program()):]
     assert args[:2] == ["build", "offline"]
-    assert args[args.index("--apk") + 1] == "/x/game.apkm" and args[args.index("--out") + 1] == "/x/game-offline"
-    assert args[args.index("--patch") + 1] == "/x/arcane-patch-1.0.0.zip" and "--allow-unofficial" in args
+    path = lambda flag: Path(args[args.index(flag) + 1])  # noqa: E731  (the platform's separators)
+    assert path("--apk") == Path("/x/game.apkm") and path("--out") == Path("/x/game-offline")
+    assert path("--patch") == Path("/x/arcane-patch-1.0.0.zip") and "--allow-unofficial" in args
     assert "--patch" not in gui.build_command(gui.Form(apk="/x/a.apk"))  # empty: the command line's default
     assert "--no-ad-rewards" in args and "--guest-login" in args and args[args.index("--label") + 1] == "Mine"
     assert "secret" not in cmd  # the password goes through the environment only
@@ -146,7 +147,7 @@ def test_window_only_fills_in_command_line_options():
     cli.parser().parse_args(args)
     cli.parser().parse_args(gui.doctor_command(f)[len(gui.program()):])
     cli.parser().parse_args(gui.keystore_command("/x/new.keystore", "me")[len(gui.program()):])
-    assert gui.default_out("/x/game.apk", "multi") == "/x/game-multiplayer.apk"
+    assert Path(gui.default_out("/x/game.apk", "multi")) == Path("/x/game-multiplayer.apk")
 
 
 def test_program_runs_this_package():
