@@ -1,6 +1,6 @@
 [project]
 name = "arcane-patcher"
-version = "0.3.2"
+version = "0.3.3"
 description = "Builds offline and multiplayer variants from your own copy of the v29 Android client"
 license = "GPL-3.0-only"
 license-files = ["LICENSE"]
