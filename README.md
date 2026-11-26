@@ -14,18 +14,19 @@ launcher icon.
 
 ## Download
 
-Take the download for your computer from the releases page, and the release's patch file
-`arcane-patch-<version>.zip` next to it (same folder); nothing else needs to be installed (no Python, Android SDK,
-apktool or Java):
+Take the zip for your computer from the releases page and unzip it. Its folder holds the program, the release's patch
+file `arcane-patch-<version>.zip` next to it (leave it zipped and in the same folder) and the third-party notices;
+nothing else needs to be installed (no Python, Android SDK, apktool or Java):
 
 | Computer | Download |
 | --- | --- |
-| Windows (64-bit) | `arcane-patcher-windows-x64.exe` |
-| macOS (Apple silicon / Intel) | `arcane-patcher-macos-arm64` / `arcane-patcher-macos-x64` |
-| Linux (x86-64) | `arcane-patcher-linux-x64` |
+| Windows (64-bit) | `arcane-patcher-windows-x64.zip` |
+| macOS (Apple silicon / Intel) | `arcane-patcher-macos-arm64.zip` / `arcane-patcher-macos-x64.zip` |
+| Linux (x86-64) | `arcane-patcher-linux-x64.zip` |
 
-On macOS and Linux, make it executable first (`chmod +x arcane-patcher-*`). macOS refuses programs from unknown
-developers on the first start: open it once with right-click > Open (or `xattr -d com.apple.quarantine FILE`).
+On macOS the program is `arcane-patcher.app`, signed and notarized: macOS asks once whether to open an app from
+the internet (Open), and it carries the release's patch file inside. Its command line is
+`arcane-patcher.app/Contents/MacOS/arcane-patcher`. On Windows, SmartScreen may ask first: More info > Run anyway.
 
 Started without arguments (for example by a double-click) it opens a small window: choose the variant, your APK,
 where to write the result and your keystore (or create one), check the requirements, build. The window is only a

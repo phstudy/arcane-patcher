@@ -23,7 +23,7 @@ FLAGS = (("guest_login", "--guest-login", "Log in as guest (no sign-in popup)"),
 
 @dataclass
 class Form:
-    variant: str = "multi"
+    variant: str = "offline"
     apk: str = ""
     out: str = ""
     keystore: str = ""
@@ -121,7 +121,7 @@ def _hide_own_console() -> None:  # pragma: no cover - Windows only
 def run() -> int:  # pragma: no cover - interactive
     _hide_own_console()
     import tkinter as tk
-    from tkinter import filedialog, messagebox, simpledialog, ttk
+    from tkinter import filedialog, messagebox, ttk
 
     from arcane_patcher.doctor import checks  # noqa: F401  (imported early: a broken install fails here, visibly)
 
@@ -154,8 +154,8 @@ def run() -> int:  # pragma: no cover - interactive
     ttk.Label(frm, text="Variant").grid(row=row, column=0, sticky="w")
     vf = ttk.Frame(frm)
     vf.grid(row=row, column=1, sticky="w")
-    ttk.Radiobutton(vf, text="Multiplayer (server chosen on the phone)", value="multi", variable=v["variant"]).pack(side="left")
-    ttk.Radiobutton(vf, text="Offline (server on the phone)", value="offline", variable=v["variant"]).pack(side="left", padx=12)
+    ttk.Radiobutton(vf, text="Offline (server on the phone)", value="offline", variable=v["variant"]).pack(side="left")
+    ttk.Radiobutton(vf, text="Multiplayer (server chosen on the phone)", value="multi", variable=v["variant"]).pack(side="left", padx=12)
     row += 1
 
     def picker(label: str, key: str, choose, extra=None):
@@ -168,6 +168,14 @@ def run() -> int:  # pragma: no cover - interactive
         if extra:
             ttk.Button(bf, text=extra[0], command=extra[1]).pack(side="left", padx=(4, 0))
         row += 1
+
+    def follow_variant(*_):
+        """A switch of variant renames an output the window chose itself (not one the user picked)."""
+        apk = v["apk"].get()
+        if apk and v["out"].get() in {default_out(apk, "multi"), default_out(apk, "offline")}:
+            v["out"].set(default_out(apk, v["variant"].get()))
+
+    v["variant"].trace_add("write", follow_variant)
 
     def choose_apk():
         p = filedialog.askopenfilename(title="Your v29 APK or split bundle",
@@ -192,23 +200,22 @@ def run() -> int:  # pragma: no cover - interactive
             v["keystore"].set(p)
 
     def create_keystore():
+        """A new keystore with the window's Key alias and Password (no extra prompt windows: Tk on macOS can crash
+        on text typed into a short-lived dialog)."""
+        alias, pw = v["ks_alias"].get().strip() or "arcane", v["password"].get()
+        if len(pw) < 6:
+            messagebox.showinfo("New keystore", "Type a Password of at least 6 characters in the window first, then "
+                                "click Create… again. Keep it: updates of your app must be signed with it.")
+            return
         p = filedialog.asksaveasfilename(title="New keystore", defaultextension=".keystore",
                                          initialfile="arcane.keystore")
         if not p:
-            return
-        alias = simpledialog.askstring("New keystore", "Key alias:", initialvalue="arcane", parent=root)
-        if not alias:
-            return
-        pw = simpledialog.askstring("New keystore", "Password (at least 6 characters; keep it, updates need it):",
-                                    show="*", parent=root)
-        if not pw:
             return
         env = dict(os.environ)
         from arcane_patcher.signing import PASSWORD_ENV
 
         env[PASSWORD_ENV] = pw
-        start(keystore_command(p, alias), env, then=lambda ok: ok and (v["keystore"].set(p), v["ks_alias"].set(alias),
-                                                                        v["password"].set(pw)))
+        start(keystore_command(p, alias), env, then=lambda ok: ok and (v["keystore"].set(p), v["ks_alias"].set(alias)))
 
     def choose_patch_file():
         p = filedialog.askopenfilename(title="Patch file", filetypes=[("Patch file", "arcane-patch-*.zip"),

@@ -4,6 +4,7 @@ compatibility, the versionCode, finding the default one, deterministic output. N
 import json
 import os
 import zipfile
+from pathlib import Path
 
 import pytest
 from conftest import fake_kit, keys_for_tests, make_patch_file
@@ -146,3 +147,35 @@ def test_release_command(tmp_path, monkeypatch):
     assert _open(tmp_path / "out" / "arcane-patch-0.3.2.zip").trust == "unsigned"
     with pytest.raises(SystemExit, match="too large"):
         release.main(["--version", "99.0.0", "--out", str(tmp_path / "out"), "--unsigned"])
+
+
+def test_program_dir_is_the_folder_holding_the_macos_app(tmp_path):
+    exe = tmp_path / "arcane-patcher-macos-arm64" / "arcane-patcher.app" / "Contents" / "MacOS" / "arcane-patcher"
+    assert patchfile.program_dir(exe) == tmp_path / "arcane-patcher-macos-arm64"
+    plain = tmp_path / "arcane-patcher-linux-x64" / "arcane-patcher"
+    assert patchfile.program_dir(plain) == tmp_path / "arcane-patcher-linux-x64"
+
+
+def test_a_folder_that_cannot_be_listed_is_skipped(tmp_path, monkeypatch):
+    """macOS runs a downloaded app from a read-only copy whose folder cannot be listed (Errno 34); the window must
+    still open."""
+    good, bad = tmp_path / "data", tmp_path / "translocated"
+    good.mkdir(), bad.mkdir()
+    (good / "arcane-patch-1.0.0.zip").write_bytes(b"")
+    real = Path.iterdir
+
+    def iterdir(self):
+        if self == bad:
+            raise OSError(34, "Result too large")
+        return real(self)
+
+    monkeypatch.setattr(Path, "iterdir", iterdir)
+    assert patchfile.find_default([bad, good]) == good / "arcane-patch-1.0.0.zip"
+
+
+def test_frozen_program_looks_inside_itself_first(tmp_path, monkeypatch):
+    monkeypatch.setattr(patchfile.sys, "frozen", True, raising=False)
+    monkeypatch.setattr(patchfile.sys, "_MEIPASS", str(tmp_path / "Frameworks"), raising=False)
+    monkeypatch.setattr(patchfile.sys, "executable", str(tmp_path / "x.app" / "Contents" / "MacOS" / "arcane-patcher"))
+    dirs = patchfile.search_dirs()
+    assert dirs[0] == tmp_path / "Frameworks" / "patch" and dirs[1] == tmp_path

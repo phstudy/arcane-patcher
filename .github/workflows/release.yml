@@ -3,8 +3,11 @@
 # arcane-patch-<version>.zip. On a v<version> tag it is signed (the repository secret ARCANE_PATCH_SIGNING_KEY, an
 # Ed25519 PEM); a manual run makes an unsigned one (not a release). One executable per platform is made with
 # PyInstaller on CPython 3.14 from the locked environment (uv sync --locked: the bundled code and its third-party
-# notices are reproducible), smoke-tested with the patch file next to it, and on a tag the executables, their notices
-# and the patch file are attached to the release. Actions are pinned to commits.
+# notices are reproducible), smoke-tested with the patch file next to it, and zipped with the patch file and the
+# notices (packaging/bundle.py: the executable bit survives a browser download). On a tag the macOS executables are
+# signed with a Developer ID (secrets MACOS_SIGN_P12, base64, and MACOS_SIGN_P12_PASSWORD) and the zips notarized
+# (an App Store Connect API key: ASC_KEY_P8, ASC_KEY_ID, ASC_ISSUER_ID); the zips, their notices and the patch file
+# are attached to the release. Actions are pinned to commits.
 name: release
 on:
   push:
@@ -81,30 +84,79 @@ jobs:
       - name: "Tests (no APK: the APK-based ones skip)"
         run: uv run --no-sync python -m pytest -q
       - run: uv run --no-sync python packaging/notices.py --out build/THIRD_PARTY_NOTICES.txt
-      - run: uv run --no-sync pyinstaller --noconfirm --clean packaging/arcane-patcher.spec
+      # macOS on a tag: a Developer ID identity in a throwaway keychain; the spec signs with it (hardened runtime)
+      - name: Signing identity (macOS)
+        if: runner.os == 'macOS' && startsWith(github.ref, 'refs/tags/')
+        env:
+          P12: ${{ secrets.MACOS_SIGN_P12 }}
+          P12_PASSWORD: ${{ secrets.MACOS_SIGN_P12_PASSWORD }}
+        run: |
+          kc="$RUNNER_TEMP/sign.keychain-db"; kp="$(uuidgen)"
+          echo "$P12" | base64 --decode > "$RUNNER_TEMP/sign.p12"
+          security create-keychain -p "$kp" "$kc"
+          security set-keychain-settings -lut 3600 "$kc"
+          security unlock-keychain -p "$kp" "$kc"
+          security import "$RUNNER_TEMP/sign.p12" -k "$kc" -P "$P12_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple: -s -k "$kp" "$kc" > /dev/null
+          security list-keychains -d user -s "$kc" $(security list-keychains -d user | tr -d '"')
+          rm "$RUNNER_TEMP/sign.p12"
+          id=$(security find-identity -v -p codesigning "$kc" | sed -n 's/.*"\(Developer ID Application:[^"]*\)".*/\1/p' | head -1)
+          [ -n "$id" ] || { echo "no Developer ID Application identity in MACOS_SIGN_P12" >&2; exit 1; }
+          echo "ARCANE_CODESIGN_IDENTITY=$id" >> "$GITHUB_ENV"
+      - name: PyInstaller
+        shell: bash
+        run: |
+          # macOS: the app carries the release's patch file inside (macOS runs a downloaded app from a read-only copy)
+          [ "$RUNNER_OS" = macOS ] && export ARCANE_BUNDLED_PATCH="$(ls "$PWD"/dist/arcane-patch-*.zip)"
+          uv run --no-sync pyinstaller --noconfirm --clean packaging/arcane-patcher.spec
+      - name: Check the signature (macOS)
+        if: env.ARCANE_CODESIGN_IDENTITY != ''
+        run: codesign --verify --deep --strict --verbose=2 dist/arcane-patcher.app
       - name: Smoke test of the executable
         shell: bash
         run: |
           exe=dist/arcane-patcher; [ -f "$exe.exe" ] && exe="$exe.exe"
+          [ -d dist/arcane-patcher.app ] && exe=dist/arcane-patcher.app/Contents/MacOS/arcane-patcher
           "$exe" --help
           "$exe" notices | grep -q "Tcl"
           # finds the patch file next to it; an unsigned one (a manual run) only with --allow-unofficial
           if [ "$GITHUB_REF_TYPE" = tag ]; then "$exe" doctor; else "$exe" doctor --allow-unofficial; fi
+      # one zip per platform: the program (its executable bit kept), the patch file next to it, the notices
       - name: Name the download
         shell: bash
         run: |
-          exe=dist/arcane-patcher; ext=""; [ -f "$exe.exe" ] && { exe="$exe.exe"; ext=".exe"; }
-          mv "$exe" "dist/arcane-patcher-${{ matrix.name }}$ext"
+          exe=dist/arcane-patcher; [ -f "$exe.exe" ] && exe="$exe.exe"; [ -d dist/arcane-patcher.app ] && exe=dist/arcane-patcher.app
           cp build/THIRD_PARTY_NOTICES.txt "dist/THIRD_PARTY_NOTICES-${{ matrix.name }}.txt"
+          uv run --no-sync python packaging/bundle.py --program "$exe" --platform "${{ matrix.name }}" \
+            --patch "$(ls dist/arcane-patch-*.zip)" --notices build/THIRD_PARTY_NOTICES.txt \
+            --out "dist/arcane-patcher-${{ matrix.name }}.zip"
+      # macOS on a tag: Apple's notary service checks the signed program, so Gatekeeper opens it without a warning
+      - name: Notarize (macOS)
+        if: env.ARCANE_CODESIGN_IDENTITY != ''
+        env:
+          KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+          KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+        run: |
+          echo "$KEY_P8" > "$RUNNER_TEMP/key.p8"
+          xcrun notarytool submit "dist/arcane-patcher-${{ matrix.name }}.zip" --key "$RUNNER_TEMP/key.p8" \
+            --key-id "$KEY_ID" --issuer "$ISSUER_ID" --wait --timeout 30m --output-format json | tee notary.json
+          rm "$RUNNER_TEMP/key.p8"
+          python3 -c "import json,sys; s=json.load(open('notary.json'))['status']; sys.exit(0 if s=='Accepted' else f'notarization: {s}')"
+          # the ticket stapled into the app (Gatekeeper then checks it offline), and the zip made again with it
+          xcrun stapler staple "dist/stage/arcane-patcher-${{ matrix.name }}/arcane-patcher.app"
+          uv run --no-sync python -c "import sys; sys.path.insert(0, 'packaging'); import bundle, pathlib; \
+            bundle.zip_folder(pathlib.Path('dist/stage/arcane-patcher-${{ matrix.name }}'), \
+            pathlib.Path('dist/arcane-patcher-${{ matrix.name }}.zip'))"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
         with:
           name: arcane-patcher-${{ matrix.name }}
           path: |
-            dist/arcane-patcher-${{ matrix.name }}*
+            dist/arcane-patcher-${{ matrix.name }}.zip
             dist/THIRD_PARTY_NOTICES-${{ matrix.name }}.txt
       - uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65  # v2.6.2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            dist/arcane-patcher-${{ matrix.name }}*
+            dist/arcane-patcher-${{ matrix.name }}.zip
             dist/THIRD_PARTY_NOTICES-${{ matrix.name }}.txt

@@ -179,11 +179,22 @@ def version_code(version: str) -> int:
     return 2_100_000_000 + major * 1_000_000 + minor * 1_000 + patch
 
 
+def program_dir(executable: Path) -> Path:
+    """The folder the download unpacked: the executable's, or on macOS the one holding its .app bundle
+    (<folder>/arcane-patcher.app/Contents/MacOS/arcane-patcher)."""
+    parent = executable.parent
+    if parent.name == "MacOS" and parent.parent.name == "Contents" and parent.parent.parent.suffix == ".app":
+        return parent.parent.parent.parent
+    return parent
+
+
 def search_dirs() -> list[Path]:
-    """Where patch files are looked for: next to the program (the download ships the current one there), and the
-    user's data folder. In a source checkout: dist/ of the checkout."""
+    """Where patch files are looked for: inside the program (the macOS app), next to the program (the download ships
+    the current one there), and the user's data folder. In a source checkout: dist/ of the checkout."""
     if getattr(sys, "frozen", False):
-        dirs = [Path(sys.executable).resolve().parent]
+        # the macOS app carries the release's patch file inside (signed with it): macOS runs a downloaded app
+        # from a read-only copy of the app alone, so the file next to it in the download is out of reach
+        dirs = [Path(getattr(sys, "_MEIPASS", "")) / "patch", program_dir(Path(sys.executable).resolve())]
     else:
         dirs = [Path(__file__).resolve().parents[2] / "dist"]
     if sys.platform == "win32":
@@ -199,8 +210,11 @@ def find_default(dirs: list[Path] | None = None) -> Path | None:
     """The newest arcane-patch-<version>.zip in `dirs` (by the version in its name), or None."""
     found = []
     for d in dirs if dirs is not None else search_dirs():
-        if d.is_dir():
-            for f in d.iterdir():
-                if m := NAME.fullmatch(f.name):
-                    found.append((version_tuple(m.group(1)), f.stat().st_mtime, f))
+        try:
+            entries = list(d.iterdir()) if d.is_dir() else []
+        except OSError:  # a folder macOS will not list (the read-only copy it runs a downloaded app from)
+            continue
+        for f in entries:
+            if m := NAME.fullmatch(f.name):
+                found.append((version_tuple(m.group(1)), f.stat().st_mtime, f))
     return max(found)[2] if found else None
