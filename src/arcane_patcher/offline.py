@@ -30,12 +30,15 @@ import os
 import re
 import shutil
 import subprocess
+import ssl
 import sys
 import tarfile
 import urllib.request
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path
+
+import truststore
 
 from arcane_patcher.patch import PatchError
 
@@ -96,6 +99,13 @@ def cached(url: str, sha256: str, name: str | None = None) -> Path | None:
     return dst if dst.is_file() and sha256_file(dst) == sha256 else None
 
 
+def tls_context() -> ssl.SSLContext:
+    """HTTPS checked against the operating system's own trusted certificates (Keychain, Windows store, the
+    distribution's bundle): the Python the download packs carries none of its own, so a fresh computer refused
+    every certificate. The downloads are checked against their sha256 as well."""
+    return truststore.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+
+
 def fetch(url: str, sha256: str, name: str | None = None) -> Path:
     """The file at `url` (http(s) or file:), from the cache when it is there with this sha256, else downloaded;
     PatchError (and nothing cached) when the download's sha256 differs."""
@@ -103,7 +113,7 @@ def fetch(url: str, sha256: str, name: str | None = None) -> Path:
         return hit
     dst = cache_dir() / (name or url.rsplit("/", 1)[1])
     print("downloading", url)
-    with urllib.request.urlopen(url) as r:
+    with urllib.request.urlopen(url, context=tls_context()) as r:
         data = r.read()
     got = hashlib.sha256(data).hexdigest()
     if got != sha256:

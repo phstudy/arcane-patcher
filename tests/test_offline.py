@@ -4,6 +4,7 @@ anything is built. No network: downloads are local files."""
 
 import hashlib
 import json
+import ssl
 import zipfile
 from pathlib import Path
 
@@ -143,3 +144,13 @@ def test_payload_pins_every_download():
     assert all(w["url"].endswith("-none-any.whl") for w in rt["wheels"])
     assert f"/python-{rt['python']}." in rt["cpython_android"]["url"]
     assert offline.device_root("com.example.game.offline") == "/data/user/0/com.example.game.offline/files/arcane_offline/root"
+
+
+def test_downloads_trust_the_operating_systems_certificates():
+    """The packaged Python carries no CA bundle: a fresh Mac refused every HTTPS download until the system's trust
+    store was used."""
+    import truststore
+
+    from arcane_patcher import offline
+    ctx = offline.tls_context()
+    assert isinstance(ctx, truststore.SSLContext) and ctx.verify_mode == ssl.CERT_REQUIRED and ctx.check_hostname

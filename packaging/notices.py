@@ -4,7 +4,7 @@
 
 Collected from that environment: CPython's LICENSE.txt, Tcl and Tk (the window; their license.terms, kept in
 packaging/licenses/ because not every Python build ships them), and the license files of every installed
-distribution the executable bundles (arcane-patcher's dependencies: cryptography with the OpenSSL and Rust code it
+distribution the executable bundles (arcane-patcher's dependencies: truststore; cryptography with the OpenSSL and Rust code it
 links, cffi, pycparser) plus PyInstaller's bootloader license (GPL with its exception for the bundled program). The
 same environment (uv sync --locked) gives the same file.
 """
@@ -17,7 +17,7 @@ from importlib import metadata
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-BUNDLED = ("cryptography", "cffi", "pycparser")  # the runtime dependencies of arcane-patcher (uv.lock)
+BUNDLED = ("cryptography", "cffi", "pycparser", "truststore")  # the runtime dependencies of arcane-patcher (uv.lock)
 NOTES = {
     "cryptography": "cryptography's compiled extension statically links OpenSSL (Apache License 2.0) and Rust crates "
                     "(MIT and / or Apache License 2.0, as listed in cryptography's Cargo.lock).",
