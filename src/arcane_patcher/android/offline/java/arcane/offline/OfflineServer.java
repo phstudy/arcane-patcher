@@ -12,6 +12,7 @@ package arcane.offline;
 import arcane.content.DataImport;
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.os.Build;
 import android.util.Log;
 
 import java.io.File;
@@ -24,6 +25,7 @@ import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -245,7 +247,7 @@ public final class OfflineServer {
             long started = System.currentTimeMillis();
             try {
                 setStatus("Starting server");
-                Process p = launch(ctx);
+                Process p = startServer(ctx);
                 proc = p;
                 int code = p.waitFor();
                 setStatus("Server exited with code " + code + " (see " + logFile(ctx) + ")");
@@ -265,12 +267,98 @@ public final class OfflineServer {
         }
     }
 
-    private static Process launch(Context ctx) throws IOException {
+    /** The server runtime of this app process: chosen at its first server start, then kept (ServerRuntime). */
+    private static volatile ServerRuntime runtime;
+
+    /** Start the server on this process's runtime; at the first start, choose it (ServerRuntime.start). */
+    private static Process startServer(Context ctx) throws IOException {
+        rotateLog(ctx);
+        ServerRuntime chosen = runtime;
+        if (chosen != null) return launch(ctx, chosen);
+        String forced = systemProperty(ServerRuntime.FORCE_PROPERTY);
+        List<ServerRuntime> order = ServerRuntime.order(
+                ServerRuntime.parse(readAll(ctx.getAssets().open(ServerRuntime.RUNTIMES))), Build.SUPPORTED_ABIS, forced);
+        logLine(ctx, "device ABIs " + android.text.TextUtils.join(",", Build.SUPPORTED_ABIS)
+                + (forced.isEmpty() ? "" : ", " + ServerRuntime.FORCE_PROPERTY + "=" + forced) + ": server runtimes " + order);
+        ServerRuntime.Started s = ServerRuntime.start(order, r -> attempt(ctx, r), line -> logLine(ctx, line));
+        runtime = s.runtime;
+        return s.process;
+    }
+
+    /** Start runtime `r` and watch it for ServerRuntime.PROBE_MS (exit code, and what it wrote to the log). */
+    private static ServerRuntime.Attempt attempt(Context ctx, ServerRuntime r) throws IOException {
+        File log = logFile(ctx);
+        long mark = log.length();
+        Process p = launch(ctx, r);
+        proc = p;  // stop() reaches it while it is watched
+        Integer code = null;
+        for (long waited = 0; code == null && waited < ServerRuntime.PROBE_MS; waited += 50) {
+            try {
+                code = p.exitValue();
+            } catch (IllegalThreadStateException running) {
+                sleep(50);
+            }
+        }
+        if (code == null) {
+            try {
+                code = p.exitValue();
+            } catch (IllegalThreadStateException running) {
+                // still running: it started
+            }
+        }
+        return new ServerRuntime.Attempt(p, code, readFrom(log, mark, 4096));
+    }
+
+    /** A line of the launcher's own in the server log (which runtime runs, and why). */
+    private static void logLine(Context ctx, String text) {
+        Log.i(TAG, text);
+        try (OutputStream o = new FileOutputStream(logFile(ctx), true)) {
+            o.write((new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss,SSS", java.util.Locale.ROOT)
+                    .format(new java.util.Date()) + " INFO launcher: " + text + "\n").getBytes(StandardCharsets.UTF_8));
+        } catch (IOException ignored) {
+        }
+    }
+
+    /** Up to `max` bytes of `f` from offset `from`. */
+    private static String readFrom(File f, long from, int max) {
+        try (RandomAccessFile r = new RandomAccessFile(f, "r")) {
+            if (r.length() <= from) return "";
+            byte[] buf = new byte[(int) Math.min(max, r.length() - from)];
+            r.seek(from);
+            r.readFully(buf);
+            return new String(buf, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            return "";
+        }
+    }
+
+    /** A system property ("" if unset), read with getprop (android.os.SystemProperties is not public API). */
+    private static String systemProperty(String name) {
+        try {
+            Process p = new ProcessBuilder("/system/bin/getprop", name).redirectErrorStream(true).start();
+            String v = readAll(p.getInputStream()).trim();
+            p.waitFor();
+            return v;
+        } catch (IOException | InterruptedException e) {
+            return "";
+        }
+    }
+
+    private static void rotateLog(Context ctx) {
+        File log = logFile(ctx);
+        if (log.length() > 4 << 20) {
+            File old = new File(log.getParentFile(), "server.log.1");
+            old.delete();
+            log.renameTo(old);
+        }
+    }
+
+    private static Process launch(Context ctx, ServerRuntime r) throws IOException {
         File root = new File(baseDir(ctx), "root");
         String libDir = ctx.getApplicationInfo().nativeLibraryDir;
-        ProcessBuilder pb = new ProcessBuilder(new File(libDir, "libarcanepython.so").getPath(), "-m", "arcane_server");
+        // no LD_LIBRARY_PATH: the folder holds every runtime's libraries; the interpreter loads its own by full path
+        ProcessBuilder pb = new ProcessBuilder(new File(libDir, r.executable).getPath(), "-m", "arcane_server");
         Map<String, String> env = pb.environment();
-        env.put("LD_LIBRARY_PATH", libDir);
         env.put("PYTHONHOME", new File(root, "python").getPath());
         env.put("PYTHONPATH", new File(root, "app/src").getPath());
         env.put("PYTHONUNBUFFERED", "1");
@@ -298,13 +386,7 @@ public final class OfflineServer {
         env.put("ARCANE_ACCOUNT_PICKER", "1");
         pb.directory(baseDir(ctx));
         pb.redirectErrorStream(true);
-        File log = logFile(ctx);
-        if (log.length() > 4 << 20) {
-            File old = new File(log.getParentFile(), "server.log.1");
-            old.delete();
-            log.renameTo(old);
-        }
-        pb.redirectOutput(ProcessBuilder.Redirect.appendTo(log));
+        pb.redirectOutput(ProcessBuilder.Redirect.appendTo(logFile(ctx)));
         return pb.start();
     }
 

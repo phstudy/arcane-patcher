@@ -18,7 +18,9 @@ setup screens, the offline runtime's native parts) and the offline variant's ser
 
 Variants (the patch file's "variants"):
   offline  the game server runs on the phone; the setup screen imports the game data once, starts the server and
-           opens the game. Package: input + ".offline", label "Offline".
+           opens the game. Package: input + ".offline", label "Offline". The server runs on the device's own CPU:
+           the APK carries a server runtime for arm64 (phones) and one for x86_64 (PC emulators, which run the arm64
+           game through ARM translation that does not cover the server process it starts); the launcher picks one.
   multi    the server is chosen on the phone at every launch (typed, scanned from a server's join page QR code, or
            opened as the link arcane://connect?url=...); the game talks to a loopback proxy that forwards to it.
            Package: input + ".multiplayer", label "Multiplayer".
@@ -545,8 +547,8 @@ _TYPE_INT_DEC = 0x10
 # --- setup-screen launchers (offline, multiplayer) ----------------------------------------------------------------
 
 EMBED_ABI_SPLIT = "split_config.arm64_v8a.apk"
-# A single APK's 32-bit libraries are left out: only the arm64 game library is patched (and the embedded server
-# runtime is arm64 only), so the device must run the arm64 code.
+# A single APK's 32-bit libraries are left out: only the arm64 game library is patched (and the embedded server's
+# runtimes go into the arm64 folder, offline.GAME_ABI_LIB_DIR), so the device must run the arm64 code.
 SINGLE_APK_DROP = ("lib/armeabi-v7a/",)
 LAUNCHER_FILTER = re.compile(
     r'\s*<intent-filter>\s*<action android:name="android.intent.action.MAIN"/>\s*'
@@ -928,7 +930,7 @@ def patch(apk: Path, out: Path, variant: Variant, keystore: Path, label: str | N
         else:
             members = inputs.members
             if spec.kind == "offline":
-                members = ["base.apk", EMBED_ABI_SPLIT]  # the server runtime exists for arm64 only
+                members = ["base.apk", EMBED_ABI_SPLIT]  # the game runs as arm64; the server runtimes go in its split
             src = tmp / "in"
             with zipfile.ZipFile(apk) as z:
                 z.extractall(src, members)

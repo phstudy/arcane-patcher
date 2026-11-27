@@ -91,10 +91,12 @@ def _server(pf, emulator_zip: Path | None, server_dir: Path | None) -> Check:
 
 
 def _downloads(pf) -> Check:
-    from arcane_patcher import offline
+    from arcane_patcher import kit, offline
 
-    rt = pf.runtime
-    items = [rt["cpython_android"], *rt.get("wheels", [])] if "cpython_android" in rt else rt.get("wheels", [])
+    try:  # CPython for Android for every server runtime the APK carries, and the server's Python packages
+        items = [*(offline.cpython_pin(pf.runtime, abi) for abi in kit.SERVER_ABIS), *pf.runtime.get("wheels", [])]
+    except SystemExit as e:
+        return Check("downloads", False, str(e), "download the current patcher with its patch file")
     pending = [i["url"] for i in items if offline.cached(i["url"], i["sha256"]) is None]
     if not pending:
         return Check("downloads", True, f"everything is in the cache ({offline.cache_dir()})", blocking=False)

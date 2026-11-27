@@ -1,8 +1,14 @@
 {
  "python": "3.14",
  "cpython_android": {
-  "url": "https://www.python.org/ftp/python/3.14.9/python-3.14.9-aarch64-linux-android.tar.gz",
-  "sha256": "e2601ffefb36bd34f49e8743d7ba3dad793bb4478fe879d45773311868b85cc5"
+  "arm64": {
+   "url": "https://www.python.org/ftp/python/3.14.9/python-3.14.9-aarch64-linux-android.tar.gz",
+   "sha256": "e2601ffefb36bd34f49e8743d7ba3dad793bb4478fe879d45773311868b85cc5"
+  },
+  "x86_64": {
+   "url": "https://www.python.org/ftp/python/3.14.9/python-3.14.9-x86_64-linux-android.tar.gz",
+   "sha256": "af218190e6ad0fbce98e46c17ea495383db045488298cfdeb081278a86941170"
+  }
  },
  "wheels": [
   {

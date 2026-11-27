@@ -59,13 +59,15 @@ def test_tampering_is_caught(tmp_path):
         z.writestr("kit/extra.dex", b"x")
     with pytest.raises(SystemExit, match="do not match its list"):
         _open(extra)
-    newer = _rewrite(good, tmp_path / "arcane-patch-5.zip",
-                     lambda n, d: json.dumps({**json.loads(d), "format": 3}).encode() if n == "patch.json" else d)
-    with pytest.raises(SystemExit, match="format 3.*get a newer patcher"):
+    newer_format = patchfile.FORMAT + 1
+    newer = _rewrite(good, tmp_path / "arcane-patch-5.zip", lambda n, d: json.dumps(
+        {**json.loads(d), "format": newer_format}).encode() if n == "patch.json" else d)
+    with pytest.raises(SystemExit, match=f"format {newer_format}.*get a newer patcher"):
         _open(newer)
+    # format 2: the kit and CPython pin for arm64 only (before the x86_64 server)
     older = _rewrite(good, tmp_path / "arcane-patch-6.zip",
-                     lambda n, d: json.dumps({**json.loads(d), "format": 1}).encode() if n == "patch.json" else d)
-    with pytest.raises(SystemExit, match="format 1.*get a newer patch file"):
+                     lambda n, d: json.dumps({**json.loads(d), "format": 2}).encode() if n == "patch.json" else d)
+    with pytest.raises(SystemExit, match="format 2.*get a newer patch file"):
         _open(older)
     (tmp_path / "x.zip").write_bytes(b"no zip")
     with pytest.raises(SystemExit, match="not a patch file"):

@@ -30,7 +30,7 @@ from pathlib import Path
 
 from arcane_patcher import __version__
 
-FORMAT = 2
+FORMAT = 3  # 3: the kit and the CPython pins per server ABI (kit.SERVER_ABIS)
 # Release keys (Ed25519, raw public key, base64). Patch files signed by one of these are official.
 TRUSTED_KEYS = {"release-2026": "gw7LHRn5H/fi5+4fp7ZXd09CSoTVwHZqp3LOQcN6n7g="}
 NAME = re.compile(r"arcane-patch-(\d+(?:\.\d+)*)(?:[-+][\w.]+)?\.zip")

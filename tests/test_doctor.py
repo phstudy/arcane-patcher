@@ -150,6 +150,16 @@ def test_window_only_fills_in_command_line_options():
     assert Path(gui.default_out("/x/game.apk", "multi")) == Path("/x/game-multiplayer.apk")
 
 
+def test_doctor_counts_every_server_runtimes_download(tmp_path, monkeypatch, patch_file):
+    """The downloads check covers CPython for Android of every server runtime the offline APK carries."""
+    from arcane_patcher import offline
+
+    asked = []
+    monkeypatch.setattr(offline, "cached", lambda url, sha: asked.append(url) or tmp_path)
+    assert doctor._downloads(patch_file).ok
+    assert asked[0].endswith("aarch64-linux-android.tar.gz") and asked[1].endswith("x86_64-linux-android.tar.gz")
+
+
 def test_program_runs_this_package():
     assert gui.program() == [sys.executable, "-m", "arcane_patcher"]
 

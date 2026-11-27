@@ -5,9 +5,10 @@
   offline.dex          the offline variant's setup screen, server provider and launcher (android/offline/java)
   multiplayer.dex      the multiplayer variant's setup screen, QR scanner and loopback proxy (android/multiplayer/java,
                        with ZXing core dexed in)
-  libarcanepython.so   the offline variant's interpreter executable (android/offline/native)
-  site-native.zip      lz4 and protobuf (with its upb C extension) built for Android arm64: the offline payload's
-                       site-packages entries that are not pure Python
+  <abi>/libarcanepython.so   the offline variant's interpreter executable (android/offline/native), per server ABI
+  <abi>/site-native.zip      lz4 and protobuf (with its upb C extension) built for Android on that ABI: the offline
+                             payload's site-packages entries that are not pure Python (their file names carry the
+                             ABI, so every ABI's modules share one site-packages)
   NOTICES.txt          the licenses of the third-party code above (written into every built APK)
 
 kit.json records each file's sha256 and `inputs`, a hash of everything the kit is built from (the Java and native
@@ -19,20 +20,56 @@ from __future__ import annotations
 
 import hashlib
 import json
+from dataclasses import dataclass
 from pathlib import Path
 
 KIT_DIR = Path(__file__).resolve().parent / "kit"
 ANDROID_DIR = Path(__file__).resolve().parent / "android"
-KIT_FORMAT = 1
-FILES = ("offline.dex", "multiplayer.dex", "libarcanepython.so", "site-native.zip", "NOTICES.txt")
+KIT_FORMAT = 2
+
+
+@dataclass(frozen=True)
+class ServerAbi:
+    """A CPU the offline variant's built-in server runs on. Every offline APK carries a server runtime for each, and
+    the launcher (OfflineServer) picks the one for the device's CPU. The game itself is always the arm64 build: an
+    x86_64 PC emulator runs it through its ARM translation, but that covers only the game's own process, not the
+    server process it starts, so such an emulator needs the server built for x86_64."""
+
+    name: str
+    triple: str  # the NDK compiler's target and CPython's extension-module tag
+    device_abis: tuple[str, ...]  # the Android ABIs (Build.SUPPORTED_ABIS) this runtime runs on natively
+    lib_suffix: str  # its files in the APK's lib folder: libpython3.14<suffix>.so, ...
+
+    def lib(self, name: str) -> str:
+        """The APK file name of this runtime's library `name` (lib*.so: the package manager extracts only those)."""
+        return name.removesuffix(".so") + self.lib_suffix + ".so"
+
+
+# The one list of server ABIs: the kit (kitbuild), the runtime pins (patchdata/runtime.json "cpython_android"), the
+# APK's runtimes (offline.build_runtime) and the launcher's table of them (offline.RUNTIMES_ASSET) all follow it; a
+# test checks the pins and the kit cover exactly these. The first is the one used on a device whose ABIs none lists.
+SERVER_ABIS = {a.name: a for a in (
+    ServerAbi("arm64", "aarch64-linux-android", ("arm64-v8a", "armeabi-v7a", "armeabi"), ""),
+    ServerAbi("x86_64", "x86_64-linux-android", ("x86_64", "x86"), "_x86_64"),
+)}
+SERVER_FILES = ("libarcanepython.so", "site-native.zip")  # built once per server ABI
+
+
+def server_file(abi: str, name: str) -> str:
+    """The kit file `name` (one of SERVER_FILES) for server ABI `abi`."""
+    return f"{abi}/{name}"
+
+
+FILES = ("offline.dex", "multiplayer.dex", "NOTICES.txt",
+         *(server_file(abi, name) for abi in SERVER_ABIS for name in SERVER_FILES))
 
 
 class KitError(SystemExit):
     """The kit is missing or does not match the sources, reported as a clear message."""
 
 
-# The kit's pinned downloads (url, sha256); CPython for Android comes from the patch file's runtime pin
-# (patchdata/runtime.json), so the kit's headers and libpython match the interpreter the offline variant ships.
+# The kit's pinned downloads (url, sha256); CPython for Android (one per server ABI) comes from the patch file's runtime
+# pins (patchdata/runtime.json), so the kit's headers and libpython match the interpreter the offline variant ships.
 LZ4_SDIST = ("https://files.pythonhosted.org/packages/57/51/f1b86d93029f418033dddf9b9f79c8d2641e7454080478ee2aab5123173e/"
              "lz4-4.4.5.tar.gz", "5f0b9e53c1e82e88c10d7c180069363980136b9d7a8306c4dca4f760d60c39f0")
 # protobuf with its upb C extension (google._upb._message): the pure-Python fallback decodes ~50x slower, which made
@@ -55,12 +92,14 @@ def runtime() -> dict:
 
 def pins() -> dict[str, object]:
     """The non-source inputs of the kit (changing one makes the kit stale)."""
-    from arcane_patcher import sdktools
+    from arcane_patcher import offline, sdktools
 
     rt = runtime()
     return {"format": KIT_FORMAT, "zxing": ZXING_CORE, "multiplayer_min_sdk": MULTIPLAYER_MIN_SDK,
             "python_android": rt["cpython_android"], "python": rt["python"], "lz4": LZ4_SDIST,
-            "protobuf": PROTOBUF_SDIST, "offline_min_sdk": OFFLINE_MIN_SDK, "ndk": sdktools.NDK_VERSION}
+            "protobuf": PROTOBUF_SDIST, "offline_min_sdk": OFFLINE_MIN_SDK, "ndk": sdktools.NDK_VERSION,
+            # the interpreter executables load these by name (kitbuild.build_launcher)
+            "runtime_libs": {a.name: [a.lib(so) for so in offline.native_libs(rt["python"])] for a in SERVER_ABIS.values()}}
 
 
 def inputs_hash(android_dir: Path = ANDROID_DIR) -> str:

@@ -2,7 +2,8 @@
 
 Needs the Android SDK (build-tools with d8, a platform android.jar), the Android NDK sdktools.NDK_VERSION, a JDK 17+
 and network on the first run (the pinned downloads: CPython for Android for its headers and libpython, the lz4 and
-protobuf sources, ZXing core). Writes the kit files and kit.json into src/arcane_patcher/kit/ by default.
+protobuf sources, ZXing core). The interpreter executable and the native modules are built once per server ABI
+(kit.SERVER_ABIS). Writes the kit files and kit.json into src/arcane_patcher/kit/ by default.
 """
 
 from __future__ import annotations
@@ -20,7 +21,11 @@ from pathlib import Path
 from arcane_patcher import kit, offline, sdktools
 
 PY_VER = kit.runtime()["python"]
-SO_SUFFIX = f".cpython-{PY_VER.replace('.', '')}-aarch64-linux-android.so"
+
+
+def so_suffix(abi: kit.ServerAbi) -> str:
+    """The file suffix CPython for Android on `abi` imports extension modules by."""
+    return f".cpython-{PY_VER.replace('.', '')}-{abi.triple}.so"
 
 
 def run(*cmd, **kw) -> subprocess.CompletedProcess:
@@ -30,10 +35,10 @@ def run(*cmd, **kw) -> subprocess.CompletedProcess:
 _PREFIX_MAP: list[str] = []  # -ffile-prefix-map for the current build's temporary folder (set by build)
 
 
-def clang(*args) -> None:
+def clang(abi: kit.ServerAbi, *args) -> None:
     # the temporary folder's path would end up in assertion messages: map it to a fixed name (reproducible kit, no
     # local paths in a release)
-    run(sdktools.ndk_tool(f"aarch64-linux-android{kit.OFFLINE_MIN_SDK}-clang"), "-O2", "-Wl,-z,max-page-size=16384",
+    run(sdktools.ndk_tool(f"{abi.triple}{kit.OFFLINE_MIN_SDK}-clang"), "-O2", "-Wl,-z,max-page-size=16384",
         *_PREFIX_MAP, *args)
 
 
@@ -56,42 +61,53 @@ def build_dex(tmp: Path, java_src: Path, min_sdk: int, jars: list[Path] = ()) ->
     return (dex_out / "classes.dex").read_bytes()
 
 
-def build_launcher(prefix: Path, tmp: Path) -> bytes:
-    out = tmp / "libarcanepython.so"
-    clang("-fPIE", "-pie", "-I", prefix / "include" / f"python{PY_VER}",
-          kit.ANDROID_DIR / "offline" / "native" / "arcanepython.c", "-L", prefix / "lib", f"-lpython{PY_VER}",
-          # find libpython next to itself: the ARM translation of x86_64 devices/emulators ignores LD_LIBRARY_PATH
-          "-Wl,-rpath,$ORIGIN", "-o", out)
+def launcher_libs(abi: kit.ServerAbi) -> str:
+    """The C list of the libraries the interpreter executable of `abi` loads by full path (ARCANE_LIBS): this
+    runtime's file names in the APK, libpython first."""
+    return ",".join(f'"{abi.lib(so)}"' for so in offline.native_libs(PY_VER))
+
+
+def build_launcher(abi: kit.ServerAbi, tmp: Path) -> bytes:
+    """The interpreter executable: links no runtime library (another ABI's file of the same name sits next to it) but
+    loads its own by full path (android/offline/native/arcanepython.c)."""
+    out = tmp / abi.name / "libarcanepython.so"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    clang(abi, "-fPIE", "-pie", f"-DARCANE_LIBS={launcher_libs(abi)}",
+          kit.ANDROID_DIR / "offline" / "native" / "arcanepython.c", "-ldl", "-o", out)
     return out.read_bytes()
 
 
-def build_lz4(prefix: Path, tmp: Path, site: Path) -> None:
+def build_lz4(abi: kit.ServerAbi, prefix: Path, tmp: Path, site: Path) -> None:
     sd = offline.fetch(*kit.LZ4_SDIST)
+    work = tmp / abi.name / "lz4"
     with tarfile.open(sd) as t:
-        t.extractall(tmp / "lz4", filter="data")
-    src = next((tmp / "lz4").iterdir())
+        t.extractall(work, filter="data")
+    src = next(work.iterdir())
     shutil.copytree(src / "lz4", site / "lz4", ignore=shutil.ignore_patterns("*.c", "frame", "stream"))
     inc = ["-I", src / "lz4libs", "-I", prefix / "include" / f"python{PY_VER}"]
     link = ["-shared", "-fPIC", "-L", prefix / "lib", f"-lpython{PY_VER}"]
-    clang(*inc, src / "lz4/_version.c", src / "lz4libs/lz4.c", *link, "-o", site / "lz4" / f"_version{SO_SUFFIX}")
-    clang(*inc, src / "lz4/block/_block.c", src / "lz4libs/lz4.c", src / "lz4libs/lz4hc.c", *link,
-          "-o", site / "lz4" / "block" / f"_block{SO_SUFFIX}")
+    clang(abi, *inc, src / "lz4/_version.c", src / "lz4libs/lz4.c", *link,
+          "-o", site / "lz4" / f"_version{so_suffix(abi)}")
+    clang(abi, *inc, src / "lz4/block/_block.c", src / "lz4libs/lz4.c", src / "lz4libs/lz4hc.c", *link,
+          "-o", site / "lz4" / "block" / f"_block{so_suffix(abi)}")
 
 
-def build_protobuf(prefix: Path, tmp: Path, site: Path) -> None:
+def build_protobuf(abi: kit.ServerAbi, prefix: Path, tmp: Path, site: Path) -> None:
     """protobuf with the upb backend: the sdist's Python package plus google/_upb/_message (the sources and flags of
     its setup.py: every .c except the fasttable decoder)."""
     sd = offline.fetch(*kit.PROTOBUF_SDIST)
+    work = tmp / abi.name / "protobuf"
     with tarfile.open(sd) as t:
-        t.extractall(tmp / "protobuf", filter="data")
-    src = next((tmp / "protobuf").iterdir())
+        t.extractall(work, filter="data")
+    src = next(work.iterdir())
     shutil.copytree(src / "google", site / "google", ignore=shutil.ignore_patterns("*.c", "*.h"), dirs_exist_ok=True)
     sources = [f for pattern in ("google/protobuf/*.c", "python/*.c", "upb/**/*.c", "utf8_range/*.c")
                for f in sorted(src.glob(pattern)) if "decode_fast" not in f.name]
     (site / "google" / "_upb").mkdir(exist_ok=True)
-    clang("-fvisibility=hidden", "-std=gnu11", "-I", src, "-I", src / "utf8_range",
+    clang(abi, "-fvisibility=hidden", "-std=gnu11", "-I", src, "-I", src / "utf8_range",
           "-I", prefix / "include" / f"python{PY_VER}", *sources,
-          "-shared", "-fPIC", "-L", prefix / "lib", f"-lpython{PY_VER}", "-o", site / "google" / "_upb" / f"_message{SO_SUFFIX}")
+          "-shared", "-fPIC", "-L", prefix / "lib", f"-lpython{PY_VER}",
+          "-o", site / "google" / "_upb" / f"_message{so_suffix(abi)}")
 
 
 def _sdist_text(sdist: tuple[str, str], member_suffix: str) -> str:
@@ -138,21 +154,23 @@ def build(out: Path = kit.KIT_DIR) -> Path:
     with tempfile.TemporaryDirectory() as tmp_s:
         tmp = Path(tmp_s)
         _PREFIX_MAP[:] = [f"-ffile-prefix-map={tmp}=/kit", f"-ffile-prefix-map={tmp.resolve()}=/kit"]
-        prefix = offline.python_prefix(tmp, kit.runtime())
-        site = tmp / "site"
-        site.mkdir()
-        build_lz4(prefix, tmp, site)
-        build_protobuf(prefix, tmp, site)
         files = {
             "offline.dex": build_dex(tmp, kit.ANDROID_DIR / "offline" / "java", kit.OFFLINE_MIN_SDK),
             "multiplayer.dex": build_dex(tmp, kit.ANDROID_DIR / "multiplayer" / "java", kit.MULTIPLAYER_MIN_SDK,
                                          [offline.fetch(*kit.ZXING_CORE)]),
-            "libarcanepython.so": build_launcher(prefix, tmp),
-            "site-native.zip": zip_tree(site),
             "NOTICES.txt": notices(),
         }
+        for abi in kit.SERVER_ABIS.values():
+            prefix = offline.python_prefix(tmp, kit.runtime(), abi.name)
+            site = tmp / abi.name / "site"
+            site.mkdir(parents=True)
+            build_lz4(abi, prefix, tmp, site)
+            build_protobuf(abi, prefix, tmp, site)
+            files[kit.server_file(abi.name, "libarcanepython.so")] = build_launcher(abi, tmp)
+            files[kit.server_file(abi.name, "site-native.zip")] = zip_tree(site)
     out.mkdir(parents=True, exist_ok=True)
     for name, data in files.items():
+        (out / name).parent.mkdir(parents=True, exist_ok=True)
         (out / name).write_bytes(data)
     kit.write_manifest(out)
     if problems := kit.problems(out):

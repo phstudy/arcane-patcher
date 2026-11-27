@@ -41,6 +41,7 @@ def fake_kit(dir: Path) -> Path:
 
     dir.mkdir(parents=True, exist_ok=True)
     for name in kit.FILES:
+        (dir / name).parent.mkdir(parents=True, exist_ok=True)
         (dir / name).write_bytes(f"kit:{name}".encode())
     kit.write_manifest(dir)
     return dir

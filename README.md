@@ -75,11 +75,14 @@ source is (repository, tag and commit). A new release usually needs only a new p
 - **The game's content set** (asset bundles, gamedata, localization), which the APK does not hold: the files your own
   install downloaded (its folder under `Android/data/`, which `adb pull` copies). The server checks it and writes
   the game data zip both variants import on the phone once (see "The game data zip" below and the server's README).
-- **A phone with Android 7.0 or newer** and a 64-bit ARM processor (arm64), for both variants.
+- **A phone with Android 7.0 or newer** and a 64-bit ARM processor (arm64), for both variants, or an x86_64 PC
+  emulator that runs ARM apps (for example BlueStacks). The game is the arm64 build either way; the offline variant's
+  server, a separate program the game starts, comes in the APK for arm64 and for x86_64 (an emulator's ARM translation
+  covers the game but not that program), and the app picks the one for the device's CPU itself.
 - **A signing keystore of your own** (see Signing); the patcher can create one.
 - **The patch file** of the release (see Patch files).
-- **Network on the first build** of the offline variant: the patch file's pinned downloads (CPython for Android, the
-  server's Python packages) are checked against their sha256 and cached (in your user cache folder, or
+- **Network on the first build** of the offline variant: the patch file's pinned downloads (CPython for Android for each
+  server CPU, the server's Python packages) are checked against their sha256 and cached (in your user cache folder, or
   `ARCANE_CACHE`).
 
 `arcane-patcher doctor` (and the window's "Check requirements") lists each of these for the options you give,
@@ -202,7 +205,7 @@ What a patch file holds is made from:
   `{package}` and `{game_activity}` filled in at build time), `patchdata/runtime.json` (the offline runtime's pinned
   downloads), `patchdata/content.json` (the client release's content set: its name and file hashes);
 - the kit (`src/arcane_patcher/kit/`, not in git): the setup screens' dex files, the offline variant's interpreter
-  executable, lz4 / protobuf built for Android, and their third-party notices (`NOTICES.txt`, from the pinned
+  executable and lz4 / protobuf built for Android, once per server CPU (`arm64/`, `x86_64/`), and their third-party notices (`NOTICES.txt`, from the pinned
   sources and `src/arcane_patcher/android/licenses/`). Only building the kit needs Android's tools; `release`
   refuses a kit not made from the sources next to it.
 

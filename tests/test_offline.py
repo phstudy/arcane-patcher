@@ -137,12 +137,13 @@ def test_payload_pins_every_download():
     from arcane_patcher import kit
 
     rt = kit.runtime()
-    pins = [(rt["cpython_android"]["url"], rt["cpython_android"]["sha256"]),
+    pins = [*((p["url"], p["sha256"]) for p in rt["cpython_android"].values()),
             *((w["url"], w["sha256"]) for w in rt["wheels"]), kit.LZ4_SDIST, kit.PROTOBUF_SDIST, kit.ZXING_CORE]
     for url, sha in pins:
         assert url.startswith("https://") and len(sha) == 64 and int(sha, 16) >= 0
     assert all(w["url"].endswith("-none-any.whl") for w in rt["wheels"])
-    assert f"/python-{rt['python']}." in rt["cpython_android"]["url"]
+    for pin in rt["cpython_android"].values():
+        assert f"/python-{rt['python']}." in pin["url"]
     assert offline.device_root("com.example.game.offline") == "/data/user/0/com.example.game.offline/files/arcane_offline/root"
 
 
@@ -154,3 +155,145 @@ def test_downloads_trust_the_operating_systems_certificates():
     from arcane_patcher import offline
     ctx = offline.tls_context()
     assert isinstance(ctx, truststore.SSLContext) and ctx.verify_mode == ssl.CERT_REQUIRED and ctx.check_hostname
+
+
+# --- the server runtimes (kit.SERVER_ABIS) -----------------------------------------------------------------------
+
+
+def test_every_server_abi_has_its_cpython_pin_and_kit_files():
+    """kit.SERVER_ABIS is the one list: the runtime pins one CPython for Android per entry (python.org's build for that
+    CPU, the same version for all), the kit holds the interpreter and the native modules per entry, and each entry's
+    files in the APK have their own names (arm64 keeps the plain ones)."""
+    from arcane_patcher import kit
+
+    rt = kit.runtime()
+    assert set(rt["cpython_android"]) == set(kit.SERVER_ABIS) and list(kit.SERVER_ABIS)[0] == "arm64"
+    for name, abi in kit.SERVER_ABIS.items():
+        url = rt["cpython_android"][name]["url"]
+        assert url.startswith("https://www.python.org/ftp/python/") and url.endswith(f"-{abi.triple}.tar.gz")
+        for f in kit.SERVER_FILES:
+            assert kit.server_file(name, f) in kit.FILES
+    assert len({p["url"].split("/")[-2] for p in rt["cpython_android"].values()}) == 1  # one CPython version
+    names = [a.lib(so) for a in kit.SERVER_ABIS.values() for so in [offline.LAUNCHER, *offline.native_libs("3.14")]]
+    assert len(set(names)) == len(names) and all(n.startswith("lib") and n.endswith(".so") for n in names)
+    assert kit.SERVER_ABIS["arm64"].lib("libpython3.14.so") == "libpython3.14.so"
+    assert kit.SERVER_ABIS["x86_64"].lib("libpython3.14.so") == "libpython3.14_x86_64.so"
+    device_abis = [d for a in kit.SERVER_ABIS.values() for d in a.device_abis]
+    assert len(set(device_abis)) == len(device_abis)
+
+
+def test_the_interpreter_loads_its_own_runtimes_libraries():
+    """Each interpreter executable is built with its own runtime's library names (libpython first)."""
+    from arcane_patcher import kit, kitbuild
+
+    assert kitbuild.launcher_libs(kit.SERVER_ABIS["x86_64"]) == (
+        '"libpython3.14_x86_64.so","libcrypto_python_x86_64.so","libssl_python_x86_64.so","libsqlite3_python_x86_64.so"')
+    assert kitbuild.launcher_libs(kit.SERVER_ABIS["arm64"]).startswith('"libpython3.14.so","libcrypto_python.so"')
+    src = (kit.ANDROID_DIR / "offline" / "native" / "arcanepython.c").read_text()
+    assert "ARCANE_LIBS" in src and "Py_BytesMain" in src and "#include <Python.h>" not in src
+
+
+def test_runtimes_table_lists_every_runtime_for_the_launcher():
+    from arcane_patcher import kit
+
+    lines = offline.runtimes_table().decode().splitlines()
+    assert lines == ["arm64 libarcanepython.so arm64-v8a,armeabi-v7a,armeabi",
+                     "x86_64 libarcanepython_x86_64.so x86_64,x86"]
+    assert [line.split()[0] for line in lines] == list(kit.SERVER_ABIS)
+
+
+def test_server_runtimes_of_every_abi_go_into_the_games_abi_folder(tmp_path, monkeypatch, patch_file):
+    """Every offline APK carries each server runtime in lib/arm64-v8a/ (the only ABI folder of the game, which the
+    package manager extracts to the folder OfflineServer execs from), each under its own names; the payload is one."""
+    from arcane_patcher import kit
+
+    seen = {}
+
+    def prefix(tmp, runtime, abi):
+        d = tmp_path / f"prefix-{abi}"
+        (d / "lib").mkdir(parents=True, exist_ok=True)
+        for so in offline.native_libs("3.14"):
+            (d / "lib" / so).write_bytes(f"{abi}:{so}".encode())
+        return d
+
+    monkeypatch.setattr(offline, "python_prefix", prefix)
+    monkeypatch.setattr(offline, "build_payload", lambda prefixes, *a: seen.update(abis=list(prefixes)) or b"payload")
+    base, native = offline.build_runtime(tmp_path / "w", "com.example.game.offline", tmp_path, patch_file)
+    assert seen["abis"] == list(kit.SERVER_ABIS)
+    assert base[offline.RUNTIMES_ASSET] == offline.runtimes_table()
+    assert set(native) == {f"lib/arm64-v8a/{a.lib(so)}" for a in kit.SERVER_ABIS.values()
+                           for so in [offline.LAUNCHER, *offline.native_libs("3.14")]}
+    assert native["lib/arm64-v8a/libarcanepython.so"] == b"kit:arm64/libarcanepython.so"
+    assert native["lib/arm64-v8a/libarcanepython_x86_64.so"] == b"kit:x86_64/libarcanepython.so"
+    assert native["lib/arm64-v8a/libpython3.14.so"] == b"arm64:libpython3.14.so"
+    assert native["lib/arm64-v8a/libssl_python_x86_64.so"] == b"x86_64:libssl_python.so"
+
+
+def test_missing_pin_is_refused():
+    from arcane_patcher import kit
+
+    assert offline.cpython_pin(kit.runtime(), "x86_64")["url"].endswith("x86_64-linux-android.tar.gz")
+    with pytest.raises(SystemExit, match="no CPython for the x86_64 server; get the current patch file"):
+        offline.cpython_pin({"cpython_android": {"arm64": {"url": "u", "sha256": "s"}}}, "x86_64")
+
+
+def _prefix(root: Path, triple: str, extra: dict[str, bytes] | None = None) -> Path:
+    """A stand-in CPython for Android prefix: shared pure Python, extension modules named for `triple`."""
+    lib = root / "lib" / "python3.14"
+    files = {"os.py": b"shared", "json/__init__.py": b"shared json",
+             f"lib-dynload/_ssl.cpython-314-{triple}.so": triple.encode(),
+             f"_sysconfigdata__android_{triple}.py": triple.encode(),
+             "build-details.json": triple.encode(), f"config-3.14-{triple}/Makefile": b"x", **(extra or {})}
+    for name, data in files.items():
+        (lib / name).parent.mkdir(parents=True, exist_ok=True)
+        (lib / name).write_bytes(data)
+    return root
+
+
+def _payload(tmp_path, monkeypatch, patch_file, prefixes):
+    import io
+
+    real_kit = patch_file.kit
+
+    def kit_file(name):
+        if name.endswith("site-native.zip"):
+            abi = name.split("/")[0]
+            triple = {"arm64": "aarch64-linux-android", "x86_64": "x86_64-linux-android"}[abi]
+            buf = io.BytesIO()
+            with zipfile.ZipFile(buf, "w") as z:
+                z.writestr("lz4/__init__.py", "shared lz4")
+                z.writestr(f"lz4/_version.cpython-314-{triple}.so", abi)
+            return buf.getvalue()
+        return real_kit(name)
+
+    monkeypatch.setattr(patch_file, "kit", kit_file)
+    monkeypatch.setattr(offline, "compile_tree", lambda *a, **k: None)
+    server = tmp_path / "server"
+    for d in offline.SERVER_TREE:
+        (server / d).mkdir(parents=True, exist_ok=True)
+    monkeypatch.setitem(patch_file.info, "runtime", {**patch_file.runtime, "wheels": []})
+    payload = offline.build_payload(prefixes, tmp_path / "w", "com.example.game.offline", server, patch_file)
+    with zipfile.ZipFile(io.BytesIO(payload)) as z:
+        return {n: z.read(n) for n in z.namelist()}
+
+
+def test_payload_is_shared_with_every_abis_native_modules(tmp_path, monkeypatch, patch_file):
+    """One Python home for every runtime: the pure Python once, each ABI's extension modules and lz4 / protobuf next
+    to each other (their names carry the ABI, so each interpreter imports only its own)."""
+    prefixes = {"arm64": _prefix(tmp_path / "a", "aarch64-linux-android"),
+                "x86_64": _prefix(tmp_path / "x", "x86_64-linux-android")}
+    files = _payload(tmp_path, monkeypatch, patch_file, prefixes)
+    lib = "python/lib/python3.14/"
+    assert files[lib + "os.py"] == b"shared" and files[lib + "site-packages/lz4/__init__.py"] == b"shared lz4"
+    for abi, triple in (("arm64", "aarch64-linux-android"), ("x86_64", "x86_64-linux-android")):
+        assert files[f"{lib}lib-dynload/_ssl.cpython-314-{triple}.so"] == triple.encode()
+        assert files[f"{lib}_sysconfigdata__android_{triple}.py"] == triple.encode()
+        assert files[f"{lib}site-packages/lz4/_version.cpython-314-{triple}.so"] == abi.encode()
+    assert not any("build-details" in n or "/config-3.14" in n for n in files)
+
+
+def test_payload_refuses_runtimes_whose_shared_files_differ(tmp_path, monkeypatch, patch_file):
+    prefixes = {"arm64": _prefix(tmp_path / "a", "aarch64-linux-android"),
+                "x86_64": _prefix(tmp_path / "x", "x86_64-linux-android", {"os.py": b"other"})}
+    with pytest.raises(SystemExit, match="os.py differs between the server ABIs' runtimes"):
+        _payload(tmp_path, monkeypatch, patch_file, prefixes)
